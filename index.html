@@ -1,0 +1,3541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인천남고 AI자율주행로봇 동아리 — 7~12차시 교안 (Phase 2)</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js" defer></script>
+
+<style>
+  :root {
+    --maumgil-purple-50:  #FAF5FF;
+    --maumgil-purple-100: #F3E8FF;
+    --maumgil-purple-300: #C084FC;
+    --maumgil-purple-500: #A855F7;
+    --maumgil-purple-700: #7B2FBE;
+    --maumgil-purple-900: #4C1D95;
+    --maumgil-yellow:     #FACC15;
+    --maumgil-text:       #1F2937;
+    --maumgil-text-sub:   #6B7280;
+    --maumgil-border:     #E5E7EB;
+    --shadow-sm: 0 4px 12px rgba(123, 47, 190, 0.08);
+    --shadow-md: 0 6px 20px rgba(123, 47, 190, 0.15);
+    --shadow-lg: 0 8px 32px rgba(123, 47, 190, 0.25);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Pretendard Variable', 'Pretendard', 'Malgun Gothic', '맑은 고딕', sans-serif;
+    background: linear-gradient(180deg, #FAF5FF 0%, #FFFFFF 100%);
+    color: var(--maumgil-text);
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* x-cloak: visibility 사용 (display 대신) → CDN 실패 시 강제 표시 가능 */
+  [x-cloak] { visibility: hidden; }
+  /* 3초 후 강제로 보이도록 (Alpine.js 로딩 실패 대비) */
+  @keyframes forceShow { to { visibility: visible !important; } }
+  body[x-cloak], body[x-cloak] * {
+    animation: forceShow 0s 3s forwards;
+    animation-fill-mode: forwards;
+  }
+
+  code, pre {
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
+  }
+
+  /* ───────────── HERO ───────────── */
+  .hero {
+    background: linear-gradient(135deg, #4C1D95 0%, #7B2FBE 50%, #A855F7 100%);
+    color: white;
+    padding: 60px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(250, 204, 21, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(250, 204, 21, 0.2);
+    color: var(--maumgil-yellow);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border: 1px solid rgba(250, 204, 21, 0.4);
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    margin: 0 0 16px;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+  .hero-sub {
+    font-size: 22px;
+    opacity: 0.9;
+    margin-bottom: 32px;
+    font-weight: 500;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    position: relative;
+    z-index: 2;
+  }
+  .hero-meta-item {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 17px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-meta-item strong { color: var(--maumgil-yellow); }
+
+  /* ───────────── CONTAINER ───────────── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ───────────── INSTRUCTOR CARD ───────────── */
+  .instructor-card {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    margin: -40px auto 40px;
+    max-width: 800px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: relative;
+    z-index: 10;
+    border: 2px solid var(--maumgil-purple-100);
+  }
+  .instructor-avatar {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #7B2FBE, #A855F7);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 36px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .instructor-info h3 {
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--maumgil-purple-900);
+  }
+  .instructor-info p {
+    margin: 0;
+    font-size: 17px;
+    color: var(--maumgil-text-sub);
+    line-height: 1.5;
+  }
+
+  /* ───────────── TAB NAV ───────────── */
+  .tab-nav-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 12px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow-md);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-nav {
+    display: flex;
+    gap: 8px;
+    min-width: max-content;
+  }
+  .tab-btn {
+    background: var(--maumgil-purple-50);
+    color: var(--maumgil-text);
+    border: none;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .tab-btn:hover {
+    background: var(--maumgil-purple-100);
+    transform: translateY(-1px);
+  }
+  .tab-btn.active {
+    background: linear-gradient(135deg, #7B2FBE, #A855F7);
+    color: white;
+    box-shadow: 0 4px 12px rgba(123, 47, 190, 0.3);
+  }
+  .tab-btn-day {
+    font-size: 15px;
+    opacity: 0.7;
+    margin-right: 4px;
+    font-weight: 600;
+  }
+  .tab-btn.active .tab-btn-day { opacity: 0.9; }
+
+  /* ───────────── LESSON HEADER ───────────── */
+  .lesson-header {
+    background: linear-gradient(135deg, #4C1D95 0%, #7B2FBE 100%);
+    color: white;
+    padding: 36px 32px;
+    border-radius: 24px 24px 0 0;
+    margin-top: 8px;
+  }
+  .lesson-header-tag {
+    display: inline-block;
+    background: rgba(250, 204, 21, 0.2);
+    color: var(--maumgil-yellow);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    border: 1px solid rgba(250, 204, 21, 0.4);
+  }
+  .lesson-header h2 {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0 0 12px;
+    line-height: 1.3;
+  }
+  .lesson-header p {
+    font-size: 19px;
+    opacity: 0.92;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ───────────── VIDEO CARD ───────────── */
+  .video-card {
+    background: linear-gradient(135deg, #1F2937 0%, #4C1D95 100%);
+    border-radius: 0;
+    padding: 24px;
+    color: white;
+  }
+  .video-meta {
+    margin-bottom: 16px;
+  }
+  .video-meta-eyebrow {
+    color: var(--maumgil-yellow);
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .video-meta h3 {
+    font-size: 23px;
+    font-weight: 700;
+    margin: 0 0 8px;
+  }
+  .video-meta p {
+    font-size: 17px;
+    opacity: 0.85;
+    margin: 0;
+  }
+  .video-iframe-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: black;
+    margin-bottom: 16px;
+  }
+  .video-iframe-wrap iframe {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+  .video-warning {
+    background: rgba(250, 204, 21, 0.15);
+    border: 1px solid rgba(250, 204, 21, 0.4);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .video-warning p:first-child {
+    font-size: 17px;
+    color: white;
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .video-warning p:last-child {
+    font-size: 15px;
+    color: rgba(255,255,255,0.85);
+    margin: 0;
+  }
+  .video-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--maumgil-yellow);
+    color: var(--maumgil-purple-900);
+    padding: 14px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 18px;
+    transition: all 0.2s;
+  }
+  .video-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
+  }
+
+  /* ───────────── LESSON BODY ───────────── */
+  .lesson-body {
+    background: white;
+    border-radius: 0 0 24px 24px;
+    padding: 40px 32px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 40px;
+  }
+
+  /* ───────────── LEARNING BLOCK ───────────── */
+  .learning-block {
+    margin-bottom: 36px;
+    padding-bottom: 36px;
+    border-bottom: 2px dashed var(--maumgil-purple-100);
+  }
+  .learning-block:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .block-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--maumgil-purple-50);
+    color: var(--maumgil-purple-700);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .learning-block h3 {
+    font-size: 33px;
+    font-weight: 800;
+    color: var(--maumgil-purple-900);
+    margin: 0 0 20px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+  .learning-block h4 {
+    font-size: 27px;
+    font-weight: 700;
+    color: var(--maumgil-purple-700);
+    margin: 28px 0 14px;
+    line-height: 1.4;
+  }
+  .learning-block p {
+    font-size: 22px;
+    line-height: 1.7;
+    color: var(--maumgil-text);
+    margin: 0 0 16px;
+  }
+  .learning-block ul, .learning-block ol {
+    font-size: 22px;
+    line-height: 1.7;
+    color: var(--maumgil-text);
+    padding-left: 24px;
+    margin: 0 0 16px;
+  }
+  .learning-block li { margin-bottom: 10px; }
+  .learning-block strong { color: var(--maumgil-purple-700); font-weight: 700; }
+
+  /* ───────────── KNOWLEDGE CARD ───────────── */
+  .knowledge-card {
+    background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
+    border: 2px solid var(--maumgil-purple-300);
+    border-radius: 20px;
+    padding: 28px;
+    margin: 28px 0;
+  }
+  .knowledge-eyebrow {
+    display: inline-block;
+    background: var(--maumgil-purple-700);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .knowledge-card h4 {
+    font-size: 27px;
+    color: var(--maumgil-purple-900);
+    margin: 0 0 18px;
+    line-height: 1.3;
+    font-weight: 800;
+  }
+  .knowledge-section {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+  .knowledge-section-title {
+    font-weight: 700;
+    color: var(--maumgil-purple-700);
+    margin: 0 0 8px !important;
+    font-size: 19px !important;
+  }
+  .knowledge-section p, .knowledge-section ul, .knowledge-section li {
+    font-size: 19px !important;
+    line-height: 1.65 !important;
+    margin-bottom: 8px;
+  }
+  .fact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .fact-item {
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    border: 1px solid var(--maumgil-purple-100);
+  }
+  .fact-num {
+    font-size: 27px;
+    font-weight: 900;
+    color: var(--maumgil-purple-700);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .fact-label {
+    font-size: 16px;
+    color: var(--maumgil-text-sub);
+  }
+
+  /* ───────────── TIP / WARNING BOXES ───────────── */
+  .tip-box {
+    display: flex;
+    gap: 14px;
+    background: linear-gradient(135deg, rgba(250, 204, 21, 0.12), rgba(250, 204, 21, 0.05));
+    border-left: 5px solid var(--maumgil-yellow);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 18px 0;
+  }
+  .tip-emoji { font-size: 32px; line-height: 1; }
+  .tip-content p {
+    font-size: 19px !important;
+    margin: 0 !important;
+  }
+  .tip-title {
+    font-weight: 700;
+    color: var(--maumgil-purple-900);
+    margin-bottom: 4px !important;
+  }
+
+  .warning-box {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08), rgba(239, 68, 68, 0.02));
+    border-left: 5px solid #EF4444;
+    border-radius: 12px;
+    padding: 18px;
+    margin: 18px 0;
+  }
+  .warning-box p {
+    font-size: 19px !important;
+    margin: 0 !important;
+  }
+
+  /* ───────────── CODE BLOCK ───────────── */
+  .code-block {
+    background: #1E1B2E;
+    color: #E5E7EB;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-size: 16px;
+    line-height: 1.6;
+    border: 1px solid #4C1D95;
+  }
+  .code-block pre { margin: 0; white-space: pre; font-family: 'JetBrains Mono', monospace; }
+  .code-block-header {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #2D2640;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px 12px 0 0;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: -1px;
+  }
+  .code-block-header + .code-block { border-top-left-radius: 0; border-top-right-radius: 0; }
+  .copy-btn {
+    background: var(--maumgil-yellow);
+    color: var(--maumgil-purple-900);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .copy-btn:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+  /* ───────────── QUIZ ───────────── */
+  .quiz-section {
+    background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+    border: 2px solid var(--maumgil-yellow);
+    border-radius: 20px;
+    padding: 32px;
+    margin-top: 40px;
+  }
+  .quiz-eyebrow {
+    display: inline-block;
+    background: var(--maumgil-yellow);
+    color: var(--maumgil-purple-900);
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .quiz-section h3 {
+    font-size: 30px;
+    color: var(--maumgil-purple-900);
+    margin: 0 0 8px;
+    font-weight: 800;
+  }
+  .quiz-section > p {
+    font-size: 19px;
+    color: var(--maumgil-text-sub);
+    margin: 0 0 24px;
+  }
+  .student-info {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+  }
+  .student-info label {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--maumgil-purple-900);
+    margin-bottom: 6px;
+  }
+  .student-info input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid var(--maumgil-purple-100);
+    border-radius: 10px;
+    font-size: 18px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+  }
+  .student-info input:focus {
+    outline: none;
+    border-color: var(--maumgil-purple-500);
+  }
+  .quiz-question {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .quiz-question-num {
+    display: inline-block;
+    background: var(--maumgil-purple-700);
+    color: white;
+    width: 32px; height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 17px;
+    margin-right: 10px;
+  }
+  .quiz-question-text {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--maumgil-text);
+    margin-bottom: 18px;
+    display: inline;
+  }
+  .quiz-option {
+    display: block;
+    background: #FAFAFA;
+    border: 2px solid #E5E7EB;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 19px;
+  }
+  .quiz-option:hover {
+    background: var(--maumgil-purple-50);
+    border-color: var(--maumgil-purple-300);
+  }
+  .quiz-option input { margin-right: 12px; transform: scale(1.3); accent-color: var(--maumgil-purple-700); }
+  .quiz-option.correct {
+    background: #D1FAE5;
+    border-color: #10B981;
+  }
+  .quiz-option.incorrect {
+    background: #FEE2E2;
+    border-color: #EF4444;
+  }
+  .quiz-short-input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--maumgil-purple-100);
+    border-radius: 10px;
+    font-size: 19px;
+    font-family: inherit;
+    margin-top: 8px;
+  }
+  .quiz-explanation {
+    background: var(--maumgil-purple-50);
+    border-left: 4px solid var(--maumgil-purple-500);
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-top: 16px;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .quiz-explanation strong { color: var(--maumgil-purple-700); }
+  .submit-btn {
+    background: linear-gradient(135deg, #7B2FBE, #A855F7);
+    color: white;
+    border: none;
+    padding: 18px 36px;
+    border-radius: 14px;
+    font-size: 20px;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 16px;
+    box-shadow: 0 4px 16px rgba(123, 47, 190, 0.3);
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(123, 47, 190, 0.4);
+  }
+  .submit-btn:disabled {
+    background: #9CA3AF;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .quiz-result {
+    background: white;
+    border: 3px solid var(--maumgil-yellow);
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .quiz-result-score {
+    font-size: 54px;
+    font-weight: 900;
+    color: var(--maumgil-purple-700);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .quiz-result-msg {
+    font-size: 22px;
+    color: var(--maumgil-text);
+    font-weight: 700;
+  }
+
+  /* ───────────── FOOTER ───────────── */
+  .footer {
+    background: linear-gradient(135deg, #4C1D95, #7B2FBE);
+    color: white;
+    padding: 40px 24px;
+    text-align: center;
+    margin-top: 60px;
+  }
+  .footer p { margin: 6px 0; font-size: 17px; opacity: 0.9; }
+  .footer strong { color: var(--maumgil-yellow); }
+
+  /* ───────────── RESPONSIVE ───────────── */
+  @media (max-width: 768px) {
+    body { font-size: 16px; }
+    .hero { padding: 40px 16px 60px; }
+    .hero h1 { font-size: 32px; }
+    .hero-sub { font-size: 18px; }
+    .container { padding: 0 16px; }
+    .lesson-header { padding: 24px 20px; }
+    .lesson-header h2 { font-size: 26px; }
+    .lesson-body { padding: 24px 18px; }
+    .learning-block h3 { font-size: 25px; }
+    .learning-block h4 { font-size: 21px; }
+    .learning-block p, .learning-block li { font-size: 18px !important; }
+    .knowledge-card { padding: 18px; }
+    .quiz-section { padding: 20px; }
+    .instructor-card { flex-direction: column; text-align: center; padding: 20px; }
+  }
+  @media (min-width: 1920px) {
+    body { font-size: 24px; }
+  }
+
+  /* Image grid responsive */
+  .image-grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin: 24px 0;
+  }
+  .image-grid-card {
+    background: white;
+    border: 2px solid var(--maumgil-purple-100);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .image-grid-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #f9fafb;
+  }
+  .image-grid-card-title {
+    font-weight: 700;
+    font-size: 19px;
+    color: var(--maumgil-purple-700);
+    margin-top: 12px;
+  }
+  .image-grid-card-desc {
+    font-size: 16px;
+    color: var(--maumgil-text-sub);
+    margin-top: 6px;
+  }
+
+  /* Game course visualization */
+  .course-diagram {
+    background: white;
+    border: 2px solid var(--maumgil-purple-300);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .course-diagram svg { max-width: 100%; height: auto; }
+</style>
+</head>
+<body x-cloak>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div style="position: relative; z-index: 2;">
+    <span class="hero-eyebrow">🤖 인천남고등학교 AI자율주행로봇 동아리 · Phase 2</span>
+    <h1>자율주행 로봇,<br>이제는 눈을 뜬다 👁️</h1>
+    <p class="hero-sub">아두이노 통합 정리 → 라인트레이싱 챔피언십 → Python·OpenCV로 'AI의 눈' 만들기</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">📅 <strong>5/5(월) 하루</strong></div>
+      <div class="hero-meta-item">⏱️ <strong>총 6교시</strong> (5/5 하루 진행)</div>
+      <div class="hero-meta-item">🎯 <strong>7~12차시</strong></div>
+      <div class="hero-meta-item">👨‍🏫 윤가형 대표 · ㈜마음길</div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+<!-- Instructor Card -->
+<div class="instructor-card">
+  <div class="instructor-avatar">윤</div>
+  <div class="instructor-info">
+    <h3>윤가형 (Heartway) · ㈜마음길 대표</h3>
+    <p>재능대학교 디지털경영학과 겸임교수 · AX전문컨설턴트 1급 · 드론지도사 1급<br>
+    AI·로봇·드론·아쿠아포닉스 융합교육 전문 · "질문하는 힘이 미래를 만든다"</p>
+  </div>
+</div>
+
+<!-- ALPINE.JS APP -->
+<div x-data="lessonApp()">
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav-wrapper">
+    <div class="tab-nav">
+      <template x-for="(lesson, idx) in lessons" :key="idx">
+        <button
+          class="tab-btn"
+          :class="{ 'active': currentLesson === idx }"
+          @click="switchLesson(idx)">
+          <span class="tab-btn-day" x-text="lesson.day"></span>
+          <span x-text="lesson.tab"></span>
+        </button>
+      </template>
+    </div>
+  </div>
+
+  <!-- Lesson Content (one at a time) -->
+  <template x-for="(lesson, idx) in lessons" :key="idx">
+    <div x-show="currentLesson === idx">
+
+      <!-- Lesson Header -->
+      <div class="lesson-header">
+        <span class="lesson-header-tag" x-text="lesson.day + ' ' + lesson.tab"></span>
+        <h2 x-text="lesson.title"></h2>
+        <p x-text="lesson.description"></p>
+      </div>
+
+      <!-- Video Card -->
+      <template x-if="lesson.video">
+        <div class="video-card">
+          <div class="video-meta">
+            <div class="video-meta-eyebrow">🎬 차시 학습 영상</div>
+            <h3 x-text="lesson.video.title"></h3>
+            <p x-text="lesson.video.description"></p>
+          </div>
+          <div class="video-iframe-wrap">
+            <iframe
+              :src="getEmbedUrl(lesson.video.url, idx === currentLesson)"
+              title="Lesson video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="video-warning">
+            <p>⚠️ 영상이 안 보이거나 검은 화면이라면?</p>
+            <p>아래 노란 버튼을 누르세요 — YouTube에서 새 창으로 정상 재생됩니다!</p>
+          </div>
+          <a :href="lesson.video.url" target="_blank" rel="noopener noreferrer" class="video-action-btn">
+            <span>▶️</span><span>YouTube에서 영상 보기</span>
+          </a>
+        </div>
+      </template>
+
+      <!-- Lesson Body (blocks + quiz) -->
+      <div class="lesson-body">
+
+        <!-- Learning Blocks -->
+        <template x-for="(block, bIdx) in lesson.blocks" :key="bIdx">
+          <div class="learning-block">
+            <span class="block-eyebrow">
+              <span x-text="block.emoji"></span>
+              <span x-text="'블록 ' + (bIdx + 1)"></span>
+            </span>
+            <h3 x-text="block.title"></h3>
+            <div x-html="block.content"></div>
+          </div>
+        </template>
+
+        <!-- Quiz Section -->
+        <template x-if="lesson.quiz && lesson.quiz.length > 0">
+          <div class="quiz-section">
+            <span class="quiz-eyebrow">✏️ 차시 마무리 퀴즈</span>
+            <h3 x-text="'이번 차시 핵심 ' + lesson.quiz.length + '문제 풀이'"></h3>
+            <p>이름과 학번을 정확히 입력해 주세요. 모든 문제 점수는 데이터베이스에 누적되어 학기말 시상에 반영됩니다.</p>
+
+            <!-- Student Info -->
+            <div class="student-info">
+              <div>
+                <label>이름</label>
+                <input type="text" x-model="studentName" placeholder="홍길동">
+              </div>
+              <div>
+                <label>학번</label>
+                <input type="text" x-model="studentId" placeholder="20260000">
+              </div>
+              <div>
+                <label>반</label>
+                <input type="text" x-model="studentClass" placeholder="1-1">
+              </div>
+            </div>
+
+            <!-- Questions -->
+            <template x-for="(q, qIdx) in lesson.quiz" :key="qIdx">
+              <div class="quiz-question">
+                <div>
+                  <span class="quiz-question-num" x-text="qIdx + 1"></span>
+                  <span class="quiz-question-text" x-text="q.question"></span>
+                </div>
+                <div style="margin-top: 14px;">
+                  <template x-if="q.type === 'multiple'">
+                    <div>
+                      <template x-for="(opt, oIdx) in q.options" :key="oIdx">
+                        <label class="quiz-option"
+                          :class="getOptionClass(idx, qIdx, oIdx)">
+                          <input type="radio"
+                            :name="'q-' + idx + '-' + qIdx"
+                            :value="oIdx"
+                            x-model.number="answers[idx][qIdx]"
+                            :disabled="submitted[idx]">
+                          <span x-text="opt"></span>
+                        </label>
+                      </template>
+                    </div>
+                  </template>
+                  <template x-if="q.type === 'short'">
+                    <input type="text" class="quiz-short-input"
+                      x-model="answers[idx][qIdx]"
+                      :disabled="submitted[idx]"
+                      placeholder="답을 입력하세요">
+                  </template>
+                </div>
+                <template x-if="submitted[idx]">
+                  <div class="quiz-explanation">
+                    <strong x-text="isCorrect(idx, qIdx) ? '✅ 정답!' : '❌ 오답'"></strong>
+                    — <span x-text="q.explanation"></span>
+                  </div>
+                </template>
+              </div>
+            </template>
+
+            <button class="submit-btn" @click="submitQuiz(idx)" :disabled="submitted[idx]"
+              x-text="submitted[idx] ? '제출 완료 ✓' : '제출하기'"></button>
+
+            <template x-if="submitted[idx]">
+              <div class="quiz-result">
+                <div class="quiz-result-score" x-text="scores[idx] + ' / ' + lesson.quiz.length"></div>
+                <div class="quiz-result-msg" x-text="getScoreMsg(idx)"></div>
+              </div>
+            </template>
+          </div>
+        </template>
+
+      </div>
+
+    </div>
+  </template>
+
+</div>
+<!-- END ALPINE APP -->
+
+</div>
+<!-- END container -->
+
+<!-- Footer -->
+<footer class="footer">
+  <p><strong>㈜마음길 (MAUMGIL Co., Ltd.)</strong> · AI·로봇·드론 융합교육 전문기업</p>
+  <p>인천 동구 화도진로 154 · ☎ 010-2245-0298 · ✉ heartway@metaway.pro · www.metaway.pro</p>
+  <p>여성기업 · 예비사회적기업 · 공정무역실천기업 · 인천동구 청년일자리허브 협력사</p>
+  <p style="margin-top: 16px; font-size: 15px; opacity: 0.7;">ⓒ 2026 ㈜마음길 · 사유 · 상상 · 공감으로 만드는 미래교육</p>
+</footer>
+
+<!-- Alpine.js fallback -->
+<script>
+  // 즉시 실행 — body의 x-cloak을 visibility로 바꿨으므로 항상 보이지만,
+  // 만약을 위해 2초 후 한 번 더 강제 제거
+  setTimeout(function() {
+    var cloaked = document.querySelectorAll('[x-cloak]');
+    for (var i = 0; i < cloaked.length; i++) {
+      cloaked[i].removeAttribute('x-cloak');
+    }
+    if (typeof window.Alpine === 'undefined') {
+      console.warn('Alpine.js 로딩 실패 - 안전 모드 활성화');
+      // 노란색 안내 배너 표시
+      var notice = document.createElement('div');
+      notice.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#FACC15;color:#4C1D95;padding:12px;text-align:center;font-weight:700;z-index:9999;font-size:16px;';
+      notice.innerHTML = '⚠️ 인터넷 연결이 느립니다. 일부 인터랙티브 기능(탭 전환·자동 채점)이 제한될 수 있어요. 새로고침(F5) 시도해보세요.';
+      document.body.insertBefore(notice, document.body.firstChild);
+      // 모든 x-show, x-if 요소 강제 표시 — 모든 차시가 한 번에 보임
+      var hidden = document.querySelectorAll('[style*="display: none"]');
+      for (var j = 0; j < hidden.length; j++) {
+        hidden[j].style.display = '';
+      }
+    }
+  }, 2000);
+</script>
+
+<!-- ============= LESSON DATA + APP ============= -->
+<script>
+  /* ===== Google Apps Script URL =====
+     운영가이드.md 의 §3을 참고해 본인 계정으로 배포한 URL로 교체하세요.
+     (배포 시 "모든 사용자 액세스" 설정 필수) */
+  const GAS_URL = 'https://script.google.com/macros/s/AKfycby_REPLACE_ME_AFTER_DEPLOY/exec';
+
+  function lessonApp() {
+    return {
+      currentLesson: 0,
+      studentName: '',
+      studentId: '',
+      studentClass: '',
+      answers: {},
+      submitted: {},
+      scores: {},
+      lessons: LESSON_DATA,
+
+      init() {
+        this.lessons.forEach((_, idx) => {
+          this.answers[idx] = {};
+          this.submitted[idx] = false;
+          this.scores[idx] = 0;
+        });
+      },
+      switchLesson(idx) {
+        this.currentLesson = idx;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      },
+      getEmbedUrl(url, isActive) {
+        if (!url) return '';
+        let id = '';
+        const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
+        if (m) id = m[1];
+        if (!id) return url;
+        const auto = isActive ? '0' : '0';
+        return `https://www.youtube.com/embed/${id}?modestbranding=1&rel=0&autoplay=${auto}`;
+      },
+      isCorrect(lessonIdx, qIdx) {
+        const q = this.lessons[lessonIdx].quiz[qIdx];
+        const userAns = this.answers[lessonIdx][qIdx];
+        if (q.type === 'multiple') return Number(userAns) === q.answer;
+        if (q.type === 'short') {
+          if (userAns === undefined || userAns === null) return false;
+          return String(userAns).trim().toLowerCase() === String(q.answer).trim().toLowerCase();
+        }
+        return false;
+      },
+      getOptionClass(lessonIdx, qIdx, oIdx) {
+        if (!this.submitted[lessonIdx]) return '';
+        const q = this.lessons[lessonIdx].quiz[qIdx];
+        const userAns = this.answers[lessonIdx][qIdx];
+        if (oIdx === q.answer) return 'correct';
+        if (Number(userAns) === oIdx && oIdx !== q.answer) return 'incorrect';
+        return '';
+      },
+      getScoreMsg(lessonIdx) {
+        const total = this.lessons[lessonIdx].quiz.length;
+        const score = this.scores[lessonIdx];
+        const ratio = score / total;
+        if (ratio === 1) return '🏆 만점! 완벽합니다!';
+        if (ratio >= 0.8) return '👏 훌륭해요! 거의 다 맞았네요.';
+        if (ratio >= 0.6) return '👍 잘했어요! 한 번 더 복습해볼까요?';
+        if (ratio >= 0.4) return '🤔 절반은 맞췄어요. 해설을 확인해 봐요.';
+        return '💪 다시 한 번 도전! 해설을 잘 읽어보세요.';
+      },
+      submitQuiz(lessonIdx) {
+        if (!this.studentName || !this.studentId) {
+          alert('이름과 학번을 먼저 입력해 주세요!');
+          return;
+        }
+        const lesson = this.lessons[lessonIdx];
+        let score = 0;
+        const detailedAnswers = [];
+        lesson.quiz.forEach((q, qIdx) => {
+          const correct = this.isCorrect(lessonIdx, qIdx);
+          if (correct) score++;
+          detailedAnswers.push({
+            qIdx: qIdx + 1,
+            question: q.question.substring(0, 50),
+            userAnswer: this.answers[lessonIdx][qIdx],
+            correctAnswer: q.answer,
+            correct: correct
+          });
+        });
+        this.scores[lessonIdx] = score;
+        this.submitted[lessonIdx] = true;
+
+        const payload = {
+          timestamp: new Date().toISOString(),
+          school: '인천남고등학교',
+          studentClass: this.studentClass,
+          studentId: this.studentId,
+          name: this.studentName,
+          lesson: lesson.day + ' ' + lesson.tab,
+          lessonTitle: lesson.title,
+          score: score,
+          total: lesson.quiz.length,
+          answers: detailedAnswers
+        };
+
+        // LocalStorage backup
+        try {
+          const key = 'maumgil_quiz_' + Date.now();
+          localStorage.setItem(key, JSON.stringify(payload));
+        } catch (e) { console.warn('LocalStorage 저장 실패', e); }
+
+        // Send to Google Sheets
+        fetch(GAS_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(() => {
+          console.log('퀴즈 제출 완료');
+        }).catch(err => {
+          console.warn('전송 실패 - LocalStorage에 저장됨', err);
+        });
+      }
+    }
+  }
+
+  /* ====== LESSON_DATA - Phase 2 (6차시~12차시) ====== */
+  const LESSON_DATA = [
+
+  /* ============================================================
+     ★★★ 7차시 = 5/5 ① : AI 자율주행이란? + 1~6차시 종합 복습
+     ============================================================ */
+  {
+    day: '5/5(월)',
+    tab: '① AI 자율주행 입문',
+    title: '🚗 AI 자율주행, 어디까지 왔나? + 1~6차시 종합 복습',
+    description: 'Phase 2의 시작! AI 자율주행 기술의 현재를 영상으로 만나고, 1~6차시 학습 내용을 20문항으로 총정리합니다.',
+    video: {
+      title: 'AI 자율주행의 미래 — 우리는 어디까지 왔는가?',
+      description: '자율주행차가 실제 도로에서 어떻게 움직이는지, 카메라·센서·AI가 어떻게 협력하는지 한 편으로 정리합니다.',
+      url: 'https://youtu.be/QaitIj5l1bQ?si=rS1FV4FQl9ravzXS'
+    },
+    blocks: [
+      {
+        emoji: '🌟',
+        title: 'Phase 2 시작 — "이제 우리 로봇이 눈을 뜹니다"',
+        content: `
+          <p>여러분, 1~6차시 동안 정말 수고 많았어요! 🎉</p>
+          <p>1~6차시(5/1, 5/5)에는 <strong>아두이노 IDE 사용법, 미니카 조립, DC 모터 제어, 적외선 센서, LED 표시</strong>까지 자율주행 로봇의 '몸'을 완성했습니다. 우리 로봇은 이제 앞에 장애물이 있으면 피하고, 흰색 바닥에서 검은 라인을 따라갈 줄 압니다.</p>
+          <p>그런데 지금까지의 로봇은 <strong>"빛을 반사하는 적외선 센서"</strong>로만 세상을 보고 있었어요. 이건 사람으로 치면 점자블록만 더듬더듬 따라가는 시각장애인과 비슷합니다. <strong>색깔도 모르고, 신호등이 빨간색인지 초록색인지도 구분하지 못합니다.</strong></p>
+
+          <div class="tip-box">
+            <span class="tip-emoji">👁️</span>
+            <div class="tip-content">
+              <p class="tip-title">Phase 2의 목표 = 로봇에게 '눈'을 달아준다</p>
+              <p class="tip-body">7~12차시에는 <strong>NeuroCam2 카메라 + Python + OpenCV</strong>를 이용해 로봇이 진짜 '시각'을 갖도록 만듭니다. 빨간 신호등을 보면 멈추고, 검은 라인을 따라 부드럽게 곡선 주행하고, 사람·차·도로 표지판을 구분할 수 있게 됩니다.</p>
+            </div>
+          </div>
+
+          <h4>📅 Phase 2 일정 (총 6차시 · 5/5 하루)</h4>
+          <ul>
+            <li><strong>5/5(월) 6교시 한꺼번에 진행</strong></li>
+            <li><strong>차시 흐름</strong>: 7차시(AI자율주행 입문+종합복습) → 8차시(아두이노 4종 통합) → 9차시(라인 코스+챔피언십) → 10차시(Python 입문) → 11차시(OpenCV) → 12차시(빨간 신호등 게임)</li>
+          </ul>
+
+          <p>오늘 7차시는 <strong>"준비운동"</strong>입니다. 자율주행 영상 두 편을 보며 우리가 만들 로봇의 미래를 그려보고, 1~6차시 핵심 20문제로 그동안 배운 것을 머릿속에 다시 새깁니다.</p>
+        `
+      },
+      {
+        emoji: '🎬',
+        title: 'AI는 어디까지 우리 삶 속에 들어왔나?',
+        content: `
+          <p>자율주행은 AI 기술의 한 분야일 뿐입니다. 지금 이 순간에도 AI는 우리가 모르는 사이에 일상 곳곳에 스며들어 있어요.</p>
+
+          <div class="video-card" style="margin: 20px 0; border-radius: 16px;">
+            <div class="video-meta">
+              <div class="video-meta-eyebrow">🎬 보충 영상 1</div>
+              <h3>AI 활용 사례 — 우리 일상 속 인공지능</h3>
+              <p>스마트폰, 추천 알고리즘, 의료 진단, 음성 비서까지 — AI는 어디에 있을까?</p>
+            </div>
+            <div class="video-iframe-wrap">
+              <iframe src="https://www.youtube.com/embed/QMowMmIs4D8?modestbranding=1&rel=0"
+                title="AI 활용 사례" allowfullscreen></iframe>
+            </div>
+            <div class="video-warning">
+              <p>⚠️ 영상이 안 보이면 아래 노란 버튼을 눌러 새 창에서 보세요.</p>
+              <p>학교 와이파이가 YouTube를 막아둔 경우 모바일 데이터로 보거나 카카오톡 단톡방의 링크를 사용하세요.</p>
+            </div>
+            <a href="https://youtu.be/QMowMmIs4D8?si=F2Km5drkaAYVBNWo" target="_blank" rel="noopener noreferrer" class="video-action-btn">
+              <span>▶️</span><span>YouTube에서 영상 보기</span>
+            </a>
+          </div>
+
+          <h4>📌 영상에서 짚어볼 포인트 3가지</h4>
+          <ul>
+            <li><strong>AI는 만능이 아닙니다.</strong> 잘하는 것(패턴 인식, 빠른 계산)과 못하는 것(맥락 이해, 감정 판단)이 분명히 있어요.</li>
+            <li><strong>AI는 데이터로 학습합니다.</strong> 우리가 만들 빨간 신호등 감지도 결국 "빨간색이라는 데이터의 패턴"을 OpenCV에게 알려주는 작업이에요.</li>
+            <li><strong>AI는 사람이 만듭니다.</strong> 그래서 AI의 판단 기준은 결국 <strong>"누가, 어떤 의도로"</strong> 만들었느냐에 달려 있습니다. 윤리가 중요한 이유죠.</li>
+          </ul>
+
+          <div class="tip-box">
+            <span class="tip-emoji">💡</span>
+            <div class="tip-content">
+              <p class="tip-title">"질문하는 힘"으로 영상 보기</p>
+              <p class="tip-body">영상을 그냥 보지 말고 한 가지만 자기 자신에게 물어보세요 — <strong>"내 일상에서 AI가 가장 도움이 된 순간은 언제였지? 그리고 가장 화나게 했던 순간은?"</strong> 이 질문이 여러분을 단순한 AI 사용자에서 AI를 만드는 사람으로 한 발 옮겨줍니다.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🚗',
+        title: '자율주행차는 어떻게 세상을 보는가? (영상 + 핵심 정리)',
+        content: `
+          <p>위 영상(차시 시작 영상)에서 보신 자율주행차는 <strong>최소 5종류 이상의 센서</strong>를 동시에 사용합니다. 사람이 눈 두 개로 운전하는 것과 비교하면 슈퍼사이어인이죠.</p>
+
+          <h4>🔬 자율주행차의 5대 감각</h4>
+          <div class="image-grid-responsive">
+            <div class="image-grid-card" style="background: var(--maumgil-purple-50);">
+              <div style="font-size: 42px;">📷</div>
+              <div class="image-grid-card-title">카메라 (Camera)</div>
+              <div class="image-grid-card-desc">신호등, 차선, 표지판 인식<br><strong>= 우리가 7~12차시에 쓸 도구!</strong></div>
+            </div>
+            <div class="image-grid-card" style="background: var(--maumgil-purple-50);">
+              <div style="font-size: 42px;">📡</div>
+              <div class="image-grid-card-title">라이다 (LiDAR)</div>
+              <div class="image-grid-card-desc">레이저로 주변 거리 정밀 측정<br>(테슬라는 안 씀, 웨이모는 씀)</div>
+            </div>
+            <div class="image-grid-card" style="background: var(--maumgil-purple-50);">
+              <div style="font-size: 42px;">📊</div>
+              <div class="image-grid-card-title">레이더 (Radar)</div>
+              <div class="image-grid-card-desc">전파로 멀리 있는 차의 속도 측정<br>비·눈에도 강함</div>
+            </div>
+            <div class="image-grid-card" style="background: var(--maumgil-purple-50);">
+              <div style="font-size: 42px;">📍</div>
+              <div class="image-grid-card-title">GPS + 지도</div>
+              <div class="image-grid-card-desc">고정밀 지도와 위치 비교<br>"내가 지금 어느 차선에 있나?"</div>
+            </div>
+            <div class="image-grid-card" style="background: var(--maumgil-purple-50);">
+              <div style="font-size: 42px;">🔄</div>
+              <div class="image-grid-card-title">IMU + 휠 센서</div>
+              <div class="image-grid-card-desc">차의 기울기·속도·회전 감지<br>(스마트폰 자이로센서와 같은 원리)</div>
+            </div>
+          </div>
+
+          <h4>🎯 우리 로봇과 진짜 자율주행차의 차이</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 14px; text-align: left;">구분</th>
+                <th style="padding: 14px; text-align: left;">우리 로봇 (AI메이크웨어 + NeuroCam2)</th>
+                <th style="padding: 14px; text-align: left;">진짜 자율주행차</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 12px; font-weight: 700;">두뇌</td>
+                <td style="padding: 12px;">아두이노 + 노트북 (Python)</td>
+                <td style="padding: 12px;">자율주행 전용 컴퓨터 (NVIDIA Drive 등)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 12px; font-weight: 700;">눈</td>
+                <td style="padding: 12px;">USB 카메라 1개 + 적외선 센서 4개</td>
+                <td style="padding: 12px;">카메라 8~12개 + 라이다 5개 + 레이더 6개</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 12px; font-weight: 700;">소프트웨어</td>
+                <td style="padding: 12px;">OpenCV + 색상 감지 + 윤곽선 추출</td>
+                <td style="padding: 12px;">딥러닝 모델 + HD맵 + V2X 통신</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px; font-weight: 700;">목표</td>
+                <td style="padding: 12px;"><strong style="color: var(--maumgil-purple-700);">원리 이해</strong></td>
+                <td style="padding: 12px;">실제 도로 주행</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p>차이는 어마어마하지만 <strong>핵심 원리는 똑같아요</strong>. "센서로 감지 → 컴퓨터로 판단 → 모터로 행동"이라는 흐름은 1억 짜리 자율주행차나 우리 로봇이나 동일합니다. 우리는 이 원리를 작은 키트로 직접 구현하면서 자율주행의 본질을 배우는 거예요.</p>
+        `
+      },
+      {
+        emoji: '📚',
+        title: '깊이 있는 이해 — AI 자율주행의 등급 (Level 0~5)',
+        content: `
+          <div class="knowledge-card">
+            <span class="knowledge-eyebrow">📚 깊이 있는 이해</span>
+            <h4>SAE 자율주행 6단계 — "테슬라는 몇 단계일까?"</h4>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">📖 탄생 스토리</p>
+              <p>2014년 미국 자동차공학회(SAE International)가 자율주행 기술을 객관적으로 평가하기 위해 0~5단계를 정의했어요. 현재 전 세계 자동차 회사들이 이 기준을 사용합니다.</p>
+            </div>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">🌟 단계별 정리</p>
+              <ul>
+                <li><strong>Level 0 (운전자 전담)</strong> — 옛날 차. 운전자가 모든 걸 함.</li>
+                <li><strong>Level 1 (운전자 보조)</strong> — 크루즈컨트롤. 속도만 자동.</li>
+                <li><strong>Level 2 (부분 자율주행)</strong> — <strong>테슬라 오토파일럿, 현대 HDA. 지금 시중차 대부분.</strong> 운전대 잡고 있어야 함.</li>
+                <li><strong>Level 3 (조건부 자율주행)</strong> — 메르세데스 드라이브 파일럿(독일/캘리포니아). 특정 조건에서 운전자 손 떼도 됨.</li>
+                <li><strong>Level 4 (고도 자율주행)</strong> — 웨이모 로보택시(샌프란시스코, 피닉스). 정해진 구역 내에서 무인 운행.</li>
+                <li><strong>Level 5 (완전 자율주행)</strong> — 모든 도로에서 운전자 없음. <strong>아직 세상에 없음.</strong></li>
+              </ul>
+            </div>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">🔍 우리 로봇은 몇 단계?</p>
+              <p>우리가 7~12차시에 만들 로봇은 <strong>"빨간 신호등을 보면 멈추고, 라인을 따라가는"</strong> 단순 동작을 합니다. SAE 기준으로 <strong>Level 1~2 사이</strong>의 핵심 원리를 구현하는 거예요. 작아 보여도 같은 원리 위에 서 있다는 점, 잊지 마세요!</p>
+            </div>
+
+            <div class="fact-grid">
+              <div class="fact-item"><div class="fact-num">2014</div><div class="fact-label">SAE 등급 정립 연도</div></div>
+              <div class="fact-item"><div class="fact-num">L4</div><div class="fact-label">웨이모 현재 등급</div></div>
+              <div class="fact-item"><div class="fact-num">L2</div><div class="fact-label">테슬라 오토파일럿</div></div>
+              <div class="fact-item"><div class="fact-num">L5</div><div class="fact-label">우리의 미래 목표</div></div>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🎯',
+        title: '오늘의 시작 — 1~6차시 종합 복습 퀴즈 20문제',
+        content: `
+          <p>이제부터 1~6차시 동안 배운 모든 내용을 <strong>20문제로 총정리</strong>합니다.</p>
+
+          <div class="warning-box">
+            <p><strong>⚠️ 중요!</strong> 7~12차시의 모든 퀴즈 점수는 데이터베이스에 누적되어 학기말 시상에 반영됩니다. 이번 종합 복습 퀴즈 20문제는 다른 차시 퀴즈(5문제)의 4배 가중치를 갖습니다. 신중하게 풀어주세요!</p>
+          </div>
+
+          <h4>📋 퀴즈 풀이 방법</h4>
+          <ul>
+            <li>이 페이지 아래에는 <strong>5문제만</strong> 보여요. 나머지 15문제는 PDF로 받습니다.</li>
+            <li>강사 선생님이 패들렛에 올려주신 <strong>"1~6차시 종합복습 20문제.pdf"</strong>를 다운로드 → 인쇄 또는 화면에서 풀기</li>
+            <li>이 페이지의 5문제 + PDF 15문제 = <strong>총 20문제 풀고 나서 한 번에 제출</strong></li>
+          </ul>
+
+          <div class="tip-box">
+            <span class="tip-emoji">📥</span>
+            <div class="tip-content">
+              <p class="tip-title">PDF 받는 곳</p>
+              <p class="tip-body">패들렛 게시물 → "📎 첨부파일" 영역 → <strong>1~6차시_종합복습_20문제.pdf</strong> 클릭. 만약 패들렛에서 못 찾으면 강사 선생님께 카카오톡으로 요청하세요!</p>
+            </div>
+          </div>
+
+          <h4>📝 채점 방식</h4>
+          <ul>
+            <li>아래 5문제 → 자동 채점 (이 페이지에서)</li>
+            <li>PDF 15문제 → 강사가 수합 후 수동 입력 (Google Sheets에 합산)</li>
+            <li>최종 점수 = 자동 5점 + 수동 15점 = <strong>총 20점 만점</strong></li>
+          </ul>
+
+          <p style="font-size: 24px; text-align: center; margin: 30px 0; padding: 20px; background: var(--maumgil-purple-50); border-radius: 16px; color: var(--maumgil-purple-900); font-weight: 700;">
+            🌟 자, 이제 아래 5문제를 시작해 봅시다!
+          </p>
+        `
+      }
+    ],
+    quiz: [
+      {
+        type: 'multiple',
+        question: '1차시에서 배운 "코딩"의 정의로 가장 적절한 것은?',
+        options: [
+          '컴퓨터에게 일을 시키기 위해 명령어를 순서대로 적는 것',
+          '인터넷에서 게임을 다운로드하는 것',
+          '엑셀에서 표를 그리는 것',
+          '카카오톡으로 친구와 채팅하는 것'
+        ],
+        answer: 0,
+        explanation: '코딩(Coding)은 컴퓨터에게 일을 시키기 위해 명령어(코드)를 순서대로 작성하는 작업입니다. 알고리즘을 코드로 구현하는 과정이에요.'
+      },
+      {
+        type: 'multiple',
+        question: '아두이노 IDE에서 코드를 보드에 업로드하는 단축키는?',
+        options: [
+          'Ctrl + S',
+          'Ctrl + U',
+          'Ctrl + R',
+          'Ctrl + Shift + U'
+        ],
+        answer: 1,
+        explanation: 'Ctrl + U가 업로드(Upload) 단축키입니다. Ctrl + R은 컴파일만(Verify), Ctrl + S는 저장(Save)이에요. 헷갈리지 마세요!'
+      },
+      {
+        type: 'multiple',
+        question: '우리 키트의 IR 센서는 거리 측정형이라 "반사가 강할수록 값이 작아짐"이 원칙입니다. 그렇다면 바닥 IR 센서가 검은 라인 위에 있을 때 센서값은?',
+        options: [
+          '값이 커진다 (검은색은 빛 흡수 → 반사 약함 → "물체 없음"처럼 인식)',
+          '값이 작아진다 (검은색이라 빛이 더 강해짐)',
+          '항상 0이 된다',
+          '아무 변화 없다'
+        ],
+        answer: 0,
+        explanation: '⭐ 우리 IR 센서는 <strong>"반사가 강하면 작은 값, 약하면 큰 값"</strong>이라는 하나의 원칙으로 동작합니다. 검은 라인은 빛을 흡수해 반사가 약해지므로, 센서가 "물체가 멀어진/사라진" 것처럼 인식해 값이 커져요(>300). 흰 바닥은 빛을 잘 반사해서 값이 작아집니다(<300). 이 원리는 전방 IR도 동일 — 가까운 장애물 = 강한 반사 = 작은 값(<900).'
+      },
+      {
+        type: 'multiple',
+        question: '아두이노 코드의 setup() 함수와 loop() 함수의 차이는?',
+        options: [
+          '둘은 같은 함수의 다른 이름',
+          'setup()은 무한 반복, loop()는 한 번만 실행',
+          '둘 다 무한 반복하지만 속도가 다름',
+          'setup()은 한 번만 실행, loop()는 무한 반복'
+        ],
+        answer: 3,
+        explanation: 'setup()은 전원이 들어왔을 때 단 한 번만 실행되어 핀 모드 설정 등 초기화를 담당합니다. loop()는 그 후 무한히 반복되어 실제 동작을 수행해요. (Python의 while True와 비슷한 역할)'
+      },
+      {
+        type: 'short',
+        question: '미니카의 LED 블록 중 좌측에 연결되는 핀 번호는? (예: A4)',
+        answer: 'A4',
+        explanation: '제품 매뉴얼 기준 좌측 LED는 A4핀, 우측 LED는 A5핀에 연결합니다. analogWrite() 또는 digitalWrite()로 제어해요.'
+      }
+    ]
+  },
+
+  /* ============================================================
+     ★★★ 8차시 = 5/5 ② : 아두이노 4종 예제 통합 정리
+     ============================================================ */
+  {
+    day: '5/5(월)',
+    tab: '② 아두이노 4종 통합',
+    title: '🔧 아두이노 예제 4종 통합 정리 — Basic·Avoider·Follower·Linetracer',
+    description: 'AI메이크웨어 키트의 4가지 핵심 예제 코드를 한자리에서 비교 분석합니다. 각 예제의 차이를 이해하면 어떤 자율주행 동작이든 만들 수 있어요.',
+    video: {
+      title: '아두이노 5분 정복 — IDE 사용법 빠른 복습',
+      description: '본격 코드 비교 전 IDE 핵심 단축키와 시리얼 모니터 보는 법을 5분만에 복습합니다.',
+      url: 'https://youtu.be/7zBxZF95Ai8'
+    },
+    blocks: [
+      {
+        emoji: '🌟',
+        title: '오늘의 미션 — 4개 예제 코드를 "한 페이지로" 머릿속 정리하기',
+        content: `
+          <p>오늘부터 본격적인 자율주행 로봇 동작이 시작됩니다. 우리에게 주어진 무기는 <strong>4개의 예제 코드 파일</strong>이에요.</p>
+
+          <div class="image-grid-responsive">
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🚗</div>
+              <div class="image-grid-card-title">aimaker_basic_19.ino</div>
+              <div class="image-grid-card-desc"><strong>기본 주행</strong><br>전진·후진·좌회전·우회전</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🛡️</div>
+              <div class="image-grid-card-title">aimaker_avid_20.ino</div>
+              <div class="image-grid-card-desc"><strong>Avoider (회피)</strong><br>장애물을 피해 다님</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🐕</div>
+              <div class="image-grid-card-title">aimaker_flwme_21.ino</div>
+              <div class="image-grid-card-desc"><strong>Follow Me (추적)</strong><br>물체를 따라 다님</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🛤️</div>
+              <div class="image-grid-card-title">aimaker_line_22.ino</div>
+              <div class="image-grid-card-desc"><strong>Line Tracer</strong><br>검은 라인을 따라감</div>
+            </div>
+          </div>
+
+          <div class="tip-box">
+            <span class="tip-emoji">💡</span>
+            <div class="tip-content">
+              <p class="tip-title">왜 4개를 한 번에 보나요?</p>
+              <p class="tip-body">각각의 차이가 미미해 보일 수 있지만, <strong>"같은 센서로 어떻게 다르게 행동시키는가"</strong>를 이해하면 자율주행의 본질이 보입니다. Avoider와 Follow Me는 코드가 90% 똑같지만 결과는 정반대예요!</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🚗',
+        title: '예제 1 — aimaker_basic_19.ino (기본 주행)',
+        content: `
+          <p><strong>핵심 학습 포인트</strong>: DC 모터 제어 + LED 표시 + 함수 분리</p>
+
+          <h4>🎯 무엇을 배우나?</h4>
+          <ul>
+            <li><strong>DCM 라이브러리</strong>로 DC 모터 2개를 제어 (왼쪽=5,6번 핀 / 오른쪽=10,11번 핀)</li>
+            <li>5가지 기본 동작 함수: <code>GoForward()</code>, <code>GoBackward()</code>, <code>TurnLeft()</code>, <code>TurnRight()</code>, <code>Stop()</code></li>
+            <li>LED 켜기/끄기를 함수로 묶어 코드 가독성 향상 (<code>LEDOnAll()</code>, <code>LEDOffAll()</code>)</li>
+          </ul>
+
+          <h4>⚙️ 동작 흐름 (loop 안에서 무한 반복)</h4>
+          <ol>
+            <li>LED 전체 켜기 + 우회전 → 1초</li>
+            <li>LED 전체 끄기 + 후진 → 1초</li>
+            <li>정지 → 1초</li>
+          </ol>
+
+          <div class="warning-box">
+            <p><strong>⚠️ 헷갈리기 쉬운 포인트</strong> — '전진'할 때 왼쪽 모터는 <code>forward(3)</code>, 오른쪽 모터는 <code>backward(2)</code>를 줘야 정상 전진합니다. 이유는 오른쪽 모터를 거꾸로 달았기 때문이에요. 코드 안의 <code>GoForward()</code> 함수 내부를 잘 보세요!</p>
+          </div>
+
+          <div class="code-block-header">
+            <span>📄 핵심 코드 — GoForward() 함수</span>
+          </div>
+          <div class="code-block"><pre>void GoForward() {
+    M_Left.write(forward, 255);   // 왼쪽 모터: 정방향, 최대속도(255)
+    M_Right.write(backward, 255); // 오른쪽 모터: 역방향(거꾸로 달려서), 최대속도
+  }</pre></div>
+
+          <h4>📚 깊이 있는 이해 — DC 모터의 PWM 속도 제어</h4>
+          <div class="knowledge-card">
+            <span class="knowledge-eyebrow">📚 깊이 있는 이해</span>
+            <h4>PWM (펄스 폭 변조) — "디지털로 아날로그 흉내내기"</h4>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">📖 탄생 스토리</p>
+              <p>1960년대 전자공학자들이 풀어야 했던 숙제: "디지털 신호(0 또는 1)밖에 못 만드는 컴퓨터로 어떻게 연속적인 값(밝기, 속도, 음량)을 표현할까?" 그 답이 PWM입니다.</p>
+            </div>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">🌟 핵심 원리</p>
+              <p>1초 동안 신호를 켜고 끄는 비율을 조절합니다. 80% 켜고 20% 꺼두면 → 사람 눈에는 80% 밝기로 보이고, 모터는 80% 속도로 돕니다. <code>analogWrite(pin, 0~255)</code>의 숫자가 바로 그 비율이에요!</p>
+              <ul>
+                <li><strong>0</strong> → 0% (정지/꺼짐)</li>
+                <li><strong>128</strong> → 약 50% (절반 속도)</li>
+                <li><strong>255</strong> → 100% (최대 속도/최대 밝기)</li>
+              </ul>
+            </div>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">💼 일상 속 활용 사례</p>
+              <ul>
+                <li>스마트폰 화면 밝기 조절</li>
+                <li>실링팬 속도 조절</li>
+                <li>전기차 모터 토크 제어</li>
+                <li>RGB LED 색깔 만들기 (빨/초/파 각각의 밝기 조절)</li>
+                <li>마음길 아쿠아포닉스 스마트팜의 LED 식물 조명</li>
+              </ul>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🛡️',
+        title: '예제 2 — aimaker_avid_20.ino (장애물 회피)',
+        content: `
+          <p><strong>핵심 학습 포인트</strong>: 전방 IR 센서 활용 + 조건문 분기 + enum(열거형)</p>
+
+          <h4>🎯 무엇을 배우나?</h4>
+          <ul>
+            <li><strong>전방 좌(FL=A0) + 전방 우(FR=A1)</strong> 적외선 센서로 장애물 감지</li>
+            <li><code>bool</code> 변수로 "감지됨/안 감지됨"을 깔끔하게 표현</li>
+            <li><strong>enum(열거형)</strong>으로 모드(NONE/LEFT/RIGHT/BOTH)를 이름으로 관리</li>
+          </ul>
+
+          <h4>⚙️ 동작 시나리오</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">감지 상황</th>
+                <th style="padding: 12px; text-align: left;">로봇 동작</th>
+                <th style="padding: 12px; text-align: left;">LED</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">아무것도 안 보임</td>
+                <td style="padding: 10px;">전진 (직진)</td>
+                <td style="padding: 10px;">소등</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">왼쪽에만 장애물</td>
+                <td style="padding: 10px;">후진 후 우회전</td>
+                <td style="padding: 10px;">왼쪽 LED</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">오른쪽에만 장애물</td>
+                <td style="padding: 10px;">후진 후 좌회전</td>
+                <td style="padding: 10px;">오른쪽 LED</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px;">정면에 장애물</td>
+                <td style="padding: 10px;">후진 후 좌회전</td>
+                <td style="padding: 10px;">전체 LED</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="code-block-header">
+            <span>📄 핵심 코드 — 센서값 읽고 분기</span>
+          </div>
+          <div class="code-block"><pre>// 두 센서값을 읽어서 bool 변수에 저장
+// ⭐ 우리 IR 센서: 반사가 강할수록 작은 값 (가까울수록 ⬇)
+// 평소(빈 공간) ~1000 → 장애물 가까이(강한 반사) → 200~600
+  bool leftDetected  = (analogRead(A0) &lt; 900);
+  bool rightDetected = (analogRead(A1) &lt; 900);
+
+  if (leftDetected && rightDetected) {
+    // 정면 장애물 → 후진 후 좌회전
+  } else if (leftDetected) {
+    // 왼쪽 장애물 → 후진 후 우회전
+  } else if (rightDetected) {
+    // 오른쪽 장애물 → 후진 후 좌회전
+  } else {
+    // 깨끗 → 전진
+  }</pre></div>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🎯</span>
+            <div class="tip-content">
+              <p class="tip-title">우리 IR 센서의 황금 법칙 — "반사가 강하면 작은 값"</p>
+              <p class="tip-body">우리 키트의 IR 센서는 <strong>거리 측정 원리</strong>를 씁니다. 받아들인 빛 양으로 거리를 추정하는데, 회로 출력은 <strong>"반사가 강할수록 작은 값, 약할수록 큰 값"</strong>으로 나와요. 그래서:
+              <br>· 빈 공간 (반사 거의 없음) = <strong>큰 값 (~1000)</strong>
+              <br>· 가까운 장애물 (강한 반사) = <strong>작은 값</strong>
+              <br>· 흰 바닥 (강한 반사) = <strong>작은 값</strong>
+              <br>· 검은 라인 (빛 흡수, 약한 반사) = <strong>큰 값</strong>
+              <br>이 한 가지 원리만 외우면 모든 IR 코드가 한눈에 읽힙니다!</p>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <p><strong>⚠️ 같은 센서인데 코드의 부등호 방향이 다른 이유</strong></p>
+            <table style="width: 100%; margin-top: 8px; font-size: 18px;">
+              <tr style="background: white;">
+                <th style="padding: 8px; text-align: left;">센서</th>
+                <th style="padding: 8px;">평소 측정 대상</th>
+                <th style="padding: 8px;">평소 값</th>
+                <th style="padding: 8px;">"감지!" 조건</th>
+              </tr>
+              <tr>
+                <td style="padding: 8px;">전방 IR (FL, FR)</td>
+                <td style="padding: 8px; text-align: center;">빈 공간 (멀리)</td>
+                <td style="padding: 8px; text-align: center;">큰 값 (~1000)</td>
+                <td style="padding: 8px; text-align: center;"><code>&lt; 900</code> (장애물 접근)</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;">바닥 IR (BL, BR)</td>
+                <td style="padding: 8px; text-align: center;">흰 바닥 (가까움)</td>
+                <td style="padding: 8px; text-align: center;">작은 값 (~100)</td>
+                <td style="padding: 8px; text-align: center;"><code>&gt; 300</code> (검은 라인)</td>
+              </tr>
+            </table>
+            <p style="margin-top: 10px; font-size: 17px;">💡 같은 센서지만 <strong>"평소 무엇을 보고 있느냐"</strong>가 달라서 부등호가 반대로 보일 뿐. 원리는 똑같이 "반사 강함 = 작은 값"!</p>
+          </div>
+        `
+      },
+      {
+        emoji: '🐕',
+        title: '예제 3 — aimaker_flwme_21.ino (Follow Me 추적)',
+        content: `
+          <p><strong>핵심 학습 포인트</strong>: 같은 센서, 정반대의 행동 — Avoider vs Follower 비교</p>
+
+          <h4>🎯 어보이더와 무엇이 다른가?</h4>
+          <p>코드는 <strong>거의 95% 동일</strong>합니다. 다만 한 가지 결정적 차이가 있어요:</p>
+
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 19px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">상황</th>
+                <th style="padding: 12px; text-align: left;">🛡️ Avoider</th>
+                <th style="padding: 12px; text-align: left;">🐕 Follower</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">왼쪽에 물체</td>
+                <td style="padding: 10px;">→ <strong>오른쪽으로 도망</strong></td>
+                <td style="padding: 10px;">→ <strong>왼쪽으로 따라감</strong></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">오른쪽에 물체</td>
+                <td style="padding: 10px;">→ <strong>왼쪽으로 도망</strong></td>
+                <td style="padding: 10px;">→ <strong>오른쪽으로 따라감</strong></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">정면 물체</td>
+                <td style="padding: 10px;">후진 + 회전 (도망)</td>
+                <td style="padding: 10px;">직진 (따라감)</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: 700;">감지 X</td>
+                <td style="padding: 10px;">전진 (탐색)</td>
+                <td style="padding: 10px;">정지 (대기)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>⚡ 새로운 함수 — GoCurveForward (곡선 전진)</h4>
+          <p>Follower의 매력은 <strong>한쪽 모터를 1/10 속도로 줄여 자연스럽게 곡선을 그리며 따라가는</strong> 데 있어요. 어색하게 회전했다 멈추는 게 아니라 부드럽게 추적합니다.</p>
+
+          <div class="code-block-header">
+            <span>📄 핵심 코드 — 곡선 전진</span>
+          </div>
+          <div class="code-block"><pre>void GoCurveForwardLeft() {
+    M_Left.write(forward, 25);     // 왼쪽 = 1/10 속도 (살짝만)
+    M_Right.write(backward, 255);  // 오른쪽 = 최대 속도
+    // → 자연스럽게 왼쪽으로 곡선 그리며 전진
+  }</pre></div>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🤔</span>
+            <div class="tip-content">
+              <p class="tip-title">생각해보기</p>
+              <p class="tip-body">반려견 로봇, 무인 카트, 골프장 캐디봇이 사람을 따라다니는 원리도 본질적으로 이 코드와 같습니다. 차이는 센서가 더 정밀(라이다·카메라)할 뿐이에요. <strong>이 작은 코드 한 페이지가 수십억 원짜리 로봇의 핵심입니다.</strong></p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🛤️',
+        title: '예제 4 — aimaker_line_22.ino (라인트레이서)',
+        content: `
+          <p><strong>핵심 학습 포인트</strong>: 바닥 IR 센서 활용 + 라인 추적 알고리즘</p>
+
+          <h4>🎯 어떤 센서가 다른가?</h4>
+          <p>이번엔 <strong>바닥 좌(BL=A2) + 바닥 우(BR=A3)</strong> 센서를 씁니다. 전방 센서가 아니라 바닥을 향해 달려있어요.</p>
+
+          <h4>⚙️ 라인트레이서의 동작 원리</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">센서 감지 상황</th>
+                <th style="padding: 12px; text-align: left;">의미</th>
+                <th style="padding: 12px; text-align: left;">로봇 동작</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">BL · BR 모두 감지 X (흰 바닥)</td>
+                <td style="padding: 10px;">선이 두 센서 사이에 있음</td>
+                <td style="padding: 10px;"><strong>직진</strong></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">BL만 감지 (왼쪽이 검은 선)</td>
+                <td style="padding: 10px;">로봇이 왼쪽으로 치우침</td>
+                <td style="padding: 10px;"><strong>우회전</strong> (선 중앙으로 복귀)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">BR만 감지 (오른쪽이 검은 선)</td>
+                <td style="padding: 10px;">로봇이 오른쪽으로 치우침</td>
+                <td style="padding: 10px;"><strong>좌회전</strong> (선 중앙으로 복귀)</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px;">BL · BR 모두 감지 (교차점)</td>
+                <td style="padding: 10px;">큰 검은 영역 또는 사거리</td>
+                <td style="padding: 10px;">우회전 → 정지 → 전진 200ms</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning-box">
+            <p><strong>⚠️ 라인트레이서가 어보이더와 회전 방향이 반대인 이유</strong> — 어보이더는 <strong>"피하기"</strong>가 목적이라 왼쪽에 물체 있으면 오른쪽으로 도망갑니다. 라인트레이서는 <strong>"따라가기"</strong>가 목적이라 왼쪽 센서가 선 위에 있으면 우회전해서 선 중앙으로 돌아와야 해요. 같은 회전이라도 의도가 정반대입니다!</p>
+          </div>
+
+          <h4>📁 코드 파일 다운로드 안내</h4>
+          <p>강사가 제공한 4개의 .ino 파일은 모두 패들렛에 첨부되어 있습니다. 다운로드 → 아두이노 IDE에서 열기 → 보드 선택 → 업로드 순서로 진행하세요.</p>
+
+          <div class="tip-box">
+            <span class="tip-emoji">📂</span>
+            <div class="tip-content">
+              <p class="tip-title">파일 정리 팁</p>
+              <p class="tip-body">아두이노 IDE는 .ino 파일을 같은 이름의 폴더 안에 두는 걸 좋아합니다. 다운로드 후에 <code>aimaker_basic_19</code> 같은 폴더를 만들고 그 안에 .ino 파일을 넣어주세요. 이름이 다르면 IDE가 알아서 폴더를 만들도록 권유합니다 — "예"를 누르면 됩니다.</p>
+            </div>
+          </div>
+        `
+      }
+    ],
+    quiz: [
+      {
+        type: 'multiple',
+        question: 'aimaker_basic_19.ino에서 GoForward() 함수가 왼쪽 모터에 forward, 오른쪽 모터에 backward를 명령하는 이유는?',
+        options: [
+          '전진 시 두 바퀴가 다른 방향으로 돌아야 직진하기 때문',
+          '오른쪽 모터를 거꾸로 달아서, 양쪽이 같이 앞으로 굴러가게 하려고',
+          '아두이노 IDE의 버그',
+          '베터리를 절약하기 위해'
+        ],
+        answer: 1,
+        explanation: '두 모터는 서로 마주보게 달려있어서, 같은 회전 명령을 주면 한쪽은 앞·한쪽은 뒤로 돕니다. 그래서 전진 시 왼쪽 모터에 forward, 오른쪽 모터에 backward 명령을 줘야 양쪽 바퀴가 모두 앞으로 굴러갑니다.'
+      },
+      {
+        type: 'multiple',
+        question: 'Avoider(회피)와 Follower(추적)의 핵심 차이는?',
+        options: [
+          '센서 종류가 다르다 (어보이더는 IR, 팔로우미는 카메라)',
+          '사용하는 모터 개수가 다르다',
+          '동작 로직이 정반대다 (어보이더는 도망, 팔로우미는 추적)',
+          '둘은 같은 코드의 이름만 다른 것'
+        ],
+        answer: 2,
+        explanation: '두 예제는 같은 전방 IR 센서(A0, A1)를 쓰지만 동작 로직이 정반대입니다. 어보이더는 감지하면 반대로 회전·후진하고, 팔로우미는 감지한 방향으로 곡선 전진합니다.'
+      },
+      {
+        type: 'multiple',
+        question: '라인트레이서에서 바닥 좌측 센서(BL)만 검은 선을 감지했을 때, 로봇은 어떻게 움직여야 할까?',
+        options: [
+          '좌회전 (선을 더 따라감)',
+          '후진',
+          '정지',
+          '우회전 (선 중앙으로 복귀)'
+        ],
+        answer: 3,
+        explanation: 'BL만 감지된다는 것은 로봇이 왼쪽으로 치우쳤다는 뜻입니다. 선 중앙으로 돌아오려면 오른쪽으로 회전해야 해요. (어보이더와 회전 방향이 반대인 이유!)'
+      },
+      {
+        type: 'multiple',
+        question: 'Follower의 GoCurveForwardLeft() 함수에서 왼쪽 모터에 속도 25, 오른쪽 모터에 속도 255를 주는 이유는?',
+        options: [
+          '왼쪽 바퀴가 천천히 돌면 자연스럽게 왼쪽으로 곡선을 그리며 전진하기 때문',
+          '오른쪽 모터가 더 강력해서',
+          '배터리 부족 시 왼쪽이 약해져서',
+          '안전을 위해'
+        ],
+        answer: 0,
+        explanation: '한쪽 바퀴가 빠르게, 다른 쪽이 느리게 돌면 그 차이로 부드럽게 곡선을 그리며 전진합니다. 회전했다 멈췄다 하지 않고 자연스럽게 따라가게 만드는 핵심 기법이에요.'
+      },
+      {
+        type: 'short',
+        question: '아두이노 코드에서 "0~1023 범위의 아날로그 센서값을 읽어오는 함수"의 이름은? (예: digitalRead)',
+        answer: 'analogRead',
+        explanation: 'analogRead(핀번호)는 해당 핀의 아날로그 값을 0~1023 범위로 읽어옵니다. IR 센서, 조도 센서 등 연속값을 다루는 센서에 사용해요. (반대로 디지털 0/1만 읽으려면 digitalRead)'
+      }
+    ]
+  },
+
+  /* ============================================================
+     ★★★ 9차시 = 5/5 ③ : 라인트레이싱 코스 만들기 + 즉석 챔피언십
+     ============================================================ */
+  {
+    day: '5/5(월)',
+    tab: '③ 라인 코스 + 챔피언십',
+    title: '🛤️ 우리 팀의 코스를 직접 디자인하라!',
+    description: '10M 검정 절연테이프를 받아 팀별로 바닥에 코스를 그리고, 라인트레이서 로봇이 어떻게 반응하는지 연습합니다.',
+    video: {
+      title: '라인트레이싱 로봇의 다양한 코스 사례',
+      description: '세계 곳곳의 라인트레이싱 대회 영상으로 어떤 코스가 도전적인지 감을 잡아봅시다.',
+      url: 'https://youtu.be/xLuVBP7Wn7M'
+    },
+    blocks: [
+      {
+        emoji: '🎨',
+        title: '오늘의 미션 — "우리 팀만의 시그니처 코스를 디자인하라"',
+        content: `
+          <p>각 팀에 <strong>10M 길이의 검정색 절연테이프</strong>를 1롤씩 나눠드립니다. 팀별로 자유롭게 바닥에 코스를 만들고, 라인트레이서 로봇이 그 코스를 잘 따라가는지 테스트해보세요!</p>
+
+          <div class="warning-box">
+            <p><strong>📏 코스 제작 규칙</strong></p>
+            <ul style="font-size: 19px;">
+              <li>테이프 폭: <strong>약 18~20mm</strong> (일반 검정 절연테이프 기준)</li>
+              <li>곡선 반지름: 최소 <strong>15cm 이상</strong> (너무 급격한 커브는 로봇이 라인을 놓침)</li>
+              <li>전체 길이: 10M 이내 (1롤 기준)</li>
+              <li>시작점·종료점 표시: 빨간 절연테이프로 짧게 표시 (선택)</li>
+              <li><strong>안전</strong>: 다른 팀 활동 영역 침범 금지!</li>
+            </ul>
+          </div>
+
+          <h4>🎯 추천 코스 패턴 5가지</h4>
+          <div class="image-grid-responsive">
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🟢</div>
+              <div class="image-grid-card-title">초급 — 기본 ㅇ자형</div>
+              <div class="image-grid-card-desc">완만한 원형 트랙<br>(처음 테스트용, 반지름 30cm 이상)</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🟡</div>
+              <div class="image-grid-card-title">중급 — S자형</div>
+              <div class="image-grid-card-desc">좌우 곡선이 번갈아 나옴<br>(좌·우 회전 모두 테스트)</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🟠</div>
+              <div class="image-grid-card-title">중급 — 8자형</div>
+              <div class="image-grid-card-desc">교차점이 한 곳 (사거리 처리 테스트)</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🔴</div>
+              <div class="image-grid-card-title">고급 — 직각 코너</div>
+              <div class="image-grid-card-desc">90도 코너 포함<br>(로봇 속도 조절 필요)</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🔥</div>
+              <div class="image-grid-card-title">최고급 — 자유 디자인</div>
+              <div class="image-grid-card-desc">팀 이름·이니셜 모양<br>(예: M자, ♥자, 학교 로고)</div>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '⚙️',
+        title: '코스 디자인 황금 룰 5가지',
+        content: `
+          <h4>1️⃣ 곡률 반지름은 최소 15cm</h4>
+          <p>너무 급격한 커브는 로봇이 라인을 놓치고 직진해버립니다. 라인트레이서의 두 바닥 센서(BL·BR)는 약 5~6cm 간격으로 떨어져 있어, 그보다 좁은 곡률은 감지가 어려워요.</p>
+
+          <h4>2️⃣ 직선 구간을 충분히 (최소 30cm)</h4>
+          <p>곡선 다음에 곡선이 바로 이어지면 로봇이 회전 관성으로 라인을 벗어납니다. 곡선 사이에 30cm 이상 직선을 두세요.</p>
+
+          <h4>3️⃣ 교차점은 신중하게</h4>
+          <p>+자 교차점을 만들면 로봇이 어디로 갈지 헷갈려합니다. 라인트레이서 코드의 "BL+BR 모두 감지 → 우회전 후 정지 후 200ms 전진" 로직이 작동하는데, 의도한 대로 안 갈 가능성이 큽니다.</p>
+
+          <h4>4️⃣ 바닥 색을 확인하라</h4>
+          <p>나무바닥, 광택 타일, 카펫에 따라 빛 반사가 다릅니다. 광택이 심한 바닥은 검은 라인도 반사되어 센서가 흰색으로 인식하는 경우가 있어요.</p>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🔍</span>
+            <div class="tip-content">
+              <p class="tip-title">교실 바닥에서 코스 만들 때 팁</p>
+              <p class="tip-body">교실 바닥이 광택이 강하다면 <strong>흰색 전지(또는 흰 종이)를 깔고</strong> 그 위에 절연테이프 코스를 만드세요. 가장 안정적입니다. 또 절연테이프를 붙일 때 <strong>겹치지 않게, 평평하게</strong> 붙여야 센서가 깔끔하게 인식합니다.</p>
+            </div>
+          </div>
+
+          <h4>5️⃣ 한 번에 완성하지 말고, 짧은 구간씩 테스트</h4>
+          <p>10M를 다 깔고 나서 테스트하면 어디가 문제인지 모릅니다. <strong>1~2M씩 만들고 → 로봇 돌려보고 → 안 되면 그 부분만 수정</strong>하는 방식이 효율적이에요.</p>
+        `
+      },
+      {
+        emoji: '🛠️',
+        title: '코스 제작 → 테스트 워크플로우 (45분)',
+        content: `
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">단계</th>
+                <th style="padding: 12px; text-align: left;">시간</th>
+                <th style="padding: 12px; text-align: left;">활동 내용</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">1단계</td>
+                <td style="padding: 10px;">5분</td>
+                <td style="padding: 10px;"><strong>팀 회의</strong> — 코스 컨셉 정하기 (M자/하트/원형 등), 종이에 스케치</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">2단계</td>
+                <td style="padding: 10px;">15분</td>
+                <td style="padding: 10px;"><strong>코스 제작</strong> — 절연테이프로 바닥에 그리기 (1~2M씩 짧게)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">3단계</td>
+                <td style="padding: 10px;">10분</td>
+                <td style="padding: 10px;"><strong>1차 테스트</strong> — aimaker_line_22.ino 업로드 → 로봇 돌리기 → 라인 이탈 지점 메모</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">4단계</td>
+                <td style="padding: 10px;">10분</td>
+                <td style="padding: 10px;"><strong>코스 수정</strong> — 곡률 완화, 교차점 정리, 직선 추가</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: 700;">5단계</td>
+                <td style="padding: 10px;">5분</td>
+                <td style="padding: 10px;"><strong>최종 테스트 + 사진 촬영</strong> — 다음 차시(챔피언십) 사용 코스 확정</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>🎯 코드 미세 조정 팁</h4>
+          <p>코스에 맞게 <strong>aimaker_line_22.ino의 임계값과 속도</strong>를 수정해보세요:</p>
+
+          <div class="code-block-header">
+            <span>📄 미세 조정 포인트</span>
+          </div>
+          <div class="code-block"><pre>// 임계값 조정 (기본 300)
+  // ⭐ 우리 IR 센서: 검은 라인은 빛 흡수 → 반사 약함 → 큰 값
+  // → 더 민감하게(약간 어두워도 라인으로 인식): 200~250
+  // → 더 둔감하게(완전 검정만 인식): 350~400
+  if (analogRead(A2) &gt; 300) { ... }   // 검은 라인 감지!
+
+  // 속도 조정 (기본 255)
+  // → 코너가 많은 코스: 150~200
+  // → 직선 위주 코스: 255 (최대)
+  M_Left.write(forward, 255);</pre></div>
+
+          <div class="tip-box">
+            <span class="tip-emoji">💡</span>
+            <div class="tip-content">
+              <p class="tip-title">왜 어보이더는 "&lt; 900", 라인트레이서는 "&gt; 300"인가?</p>
+              <p class="tip-body">같은 센서지만 <strong>"평소 보고 있는 것"</strong>이 달라요.
+              <br>· 어보이더 = 평소 빈 공간(큰 값) → 장애물이 다가오면 작아짐 → <code>&lt; 900</code> 으로 감지
+              <br>· 라인트레이서 = 평소 흰 바닥(작은 값) → 검은 라인 위면 커짐 → <code>&gt; 300</code> 으로 감지
+              <br>원리는 똑같이 "<strong>반사 강함 = 작은 값</strong>"입니다!</p>
+            </div>
+          </div>
+
+          <div class="warning-box">
+            <p><strong>🏁 코스 완성 후 즉시 챔피언십!</strong> 코스 제작이 끝나면 바로 이어서 <strong>최단 시간 + 라인 이탈 횟수</strong>로 순위를 매기는 챔피언십을 진행합니다. 오늘 만든 코스에서 충분히 연습한 후 바로 본 경기로 들어가니 집중하세요!</p>
+          </div>
+        `
+      },
+      {
+        emoji: '🏆',
+        title: '🏆 라인트레이싱 챔피언십 — 코스 완성 후 즉시 진행',
+        content: `
+          <p>코스 제작·연습이 끝나면 <strong>바로 이어서</strong> 우리만의 라인트레이싱 챔피언십이 열립니다! 오늘 만든 자기 팀 코스 또는 강사가 미리 준비한 표준 코스에서 진행할 수 있어요.</p>
+
+          <h4>🏟️ 챔피언십 경기장 사양</h4>
+          <ul>
+            <li><strong>코스 길이</strong>: 약 6~8M (직선 + S자 + 직각 코너 1개 포함)</li>
+            <li><strong>코스 폭</strong>: 검정 절연테이프 18mm</li>
+            <li><strong>바닥</strong>: 흰색 전지 위 (반사 안정성 확보)</li>
+            <li><strong>시작점</strong>: 빨간 테이프 표시 / <strong>종료점</strong>: 파란 테이프 표시</li>
+          </ul>
+
+          <h4>📋 경기 규칙</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 19px;">
+            <thead>
+              <tr style="background: var(--maumgil-yellow); color: var(--maumgil-purple-900);">
+                <th style="padding: 12px; text-align: left;">항목</th>
+                <th style="padding: 12px; text-align: left;">규칙</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">1팀당 시도 횟수</td>
+                <td style="padding: 10px;">2회 (최고 기록 채택)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">시간 측정</td>
+                <td style="padding: 10px;">로봇이 시작선 → 종료선 통과 시간</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">라인 이탈 페널티</td>
+                <td style="padding: 10px;"><strong>이탈 1회당 +5초</strong> (4회 이상 시 실격)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">로봇 손대기</td>
+                <td style="padding: 10px;">금지 (손대면 그 시도 실격)</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: 700;">최종 점수</td>
+                <td style="padding: 10px;"><strong>주파 시간 + 페널티 시간 = 합산 시간 (작을수록 우수)</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🎯</span>
+            <div class="tip-content">
+              <p class="tip-title">전략 포인트 — 속도 vs 안정성</p>
+              <p class="tip-body">5초 페널티 1회 = "1초 빠른 속도 5번분"과 같습니다. <strong>안정적으로 1번 완주</strong>하는 게 빨리 가다 3번 이탈하는 것보다 훨씬 유리해요!</p>
+            </div>
+          </div>
+
+          <h4>🥇 시상 (3개 부문)</h4>
+          <div class="image-grid-responsive">
+            <div class="image-grid-card" style="background: linear-gradient(135deg, #FEF3C7, #FACC15); border-color: #F59E0B;">
+              <div style="font-size: 48px;">🥇</div>
+              <div class="image-grid-card-title">최단 기록상</div>
+              <div class="image-grid-card-desc">합산 시간 1위<br>(주파 + 페널티 합)</div>
+            </div>
+            <div class="image-grid-card" style="background: linear-gradient(135deg, #DBEAFE, #93C5FD); border-color: #3B82F6;">
+              <div style="font-size: 48px;">🛡️</div>
+              <div class="image-grid-card-title">완벽 주행상</div>
+              <div class="image-grid-card-desc">이탈 0회 + 손 안 대고 완주<br>(시간 무관)</div>
+            </div>
+            <div class="image-grid-card" style="background: linear-gradient(135deg, #FCE7F3, #F9A8D4); border-color: #EC4899;">
+              <div style="font-size: 48px;">🎨</div>
+              <div class="image-grid-card-title">베스트 코스 디자인상</div>
+              <div class="image-grid-card-desc">자작 코스 평가<br>창의성 + 완성도</div>
+            </div>
+          </div>
+
+          <p style="margin-top: 16px;">🏆 추가로 <strong>학기말 데이터베이스 누적 점수상</strong> — 학기 내 모든 차시 퀴즈 점수가 누적되어 학기말에 상위 3명에게 별도 시상합니다!</p>
+
+          <h4>⏱️ 진행 순서 (약 25분)</h4>
+          <ul>
+            <li><strong>5분</strong> — 코스 답사 + 마지막 코드 조정 (전 팀 공통)</li>
+            <li><strong>3분/팀</strong> — 1차 시도 (팀별 순서대로)</li>
+            <li><strong>2분/팀</strong> — 2차 시도 (코드 미세 조정 후 재도전)</li>
+            <li><strong>5분</strong> — 시상 + 단체 사진 🎉</li>
+          </ul>
+
+          <p style="font-size: 22px; text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(135deg, var(--maumgil-yellow), #FBBF24); border-radius: 16px; color: var(--maumgil-purple-900); font-weight: 700;">
+            🌟 자, 코스 완성하고 바로 챔피언십! 행운을 빌어요!
+          </p>
+        `
+      }
+    ],
+    quiz: [
+      {
+        type: 'multiple',
+        question: '라인트레이싱 코스 제작 시 곡률 반지름의 권장 최소값은?',
+        options: ['5cm', '10cm', '15cm', '50cm'],
+        answer: 2,
+        explanation: '바닥 센서 두 개의 간격이 약 5~6cm이기 때문에, 너무 급격한 곡선(반지름 10cm 이하)은 센서가 라인을 제대로 인식하지 못합니다. 최소 15cm 이상이 안정적이에요.'
+      },
+      {
+        type: 'multiple',
+        question: '코스가 잘 작동하지 않을 때 가장 먼저 확인할 것은?',
+        options: [
+          '아두이노 IDE 버전을 확인한다',
+          '학교 IT 담당 선생님께 전화한다',
+          '인터넷 연결을 확인한다',
+          '바닥 색깔과 빛 반사 정도를 확인한다'
+        ],
+        answer: 3,
+        explanation: '광택이 심한 바닥, 무늬가 복잡한 바닥에서는 검은 라인도 반사가 일어나 센서가 잘못 인식할 수 있습니다. 흰색 전지를 깔거나 다른 위치로 옮겨보는 것이 가장 효과적이에요.'
+      },
+      {
+        type: 'multiple',
+        question: '코스를 만드는 권장 워크플로우는?',
+        options: [
+          '1~2M씩 짧게 만들고 → 테스트 → 수정 → 이어붙이기 반복',
+          '10M 전체를 한 번에 깔고 테스트',
+          '먼저 코드를 다 작성하고 코스를 그에 맞게 만들기',
+          '코스는 강사가 만들고 우리는 운전만'
+        ],
+        answer: 0,
+        explanation: '한 번에 다 깔면 어디가 문제인지 추적하기 어렵습니다. 짧은 구간씩 만들고 즉시 테스트하면 문제 지점을 빠르게 파악하고 수정할 수 있어요. 이게 바로 "프로토타이핑 사고"입니다.'
+      },
+      {
+        type: 'multiple',
+        question: '코너가 많은 코스에서 로봇이 자꾸 라인을 벗어날 때 가장 효과적인 해결책은?',
+        options: [
+          '센서 임계값을 1000으로 높인다',
+          '모터 속도를 255 → 150~200으로 낮춘다',
+          '전원을 껐다 켠다',
+          '로봇을 새 것으로 교체한다'
+        ],
+        answer: 1,
+        explanation: '속도가 빠르면 회전 관성으로 라인을 놓칩니다. 코너가 많은 코스는 모터 속도를 낮추는 것이 1순위 해결책이에요. 임계값은 너무 높이면 라인을 아예 인식하지 못해 더 위험해집니다.'
+      },
+      {
+        type: 'multiple',
+        question: '챔피언십 시상 부문 중 "완벽 주행상"의 수상 조건은?',
+        options: [
+          '가장 빠른 시간',
+          '강사가 가장 좋아하는 팀',
+          '가장 화려한 코스 디자인',
+          '이탈 0회 + 손 안 대고 완주 (시간 무관)'
+        ],
+        answer: 3,
+        explanation: '완벽 주행상은 시간보다 정확성을 평가합니다. 이탈 한 번 없이, 손 안 대고 완주한 팀이 받는 상이에요. 속도가 느려도 받을 수 있는 명예로운 상!'
+      }
+    ]
+  },
+
+  /* ============================================================
+     ★★★ 10차시 = 5/5 ④ : Python 입문 — 차세대 언어와의 첫 만남
+     ============================================================ */
+  {
+    day: '5/5(월)',
+    tab: '④ Python 입문',
+    title: '🐍 Python — 가장 인기 있는 차세대 언어와의 첫 만남',
+    description: 'AI·데이터과학·웹개발 모든 분야에서 1위인 Python을 만나봅시다. 첨부 코드 01_python_basics.py를 직접 따라하며 기본 문법을 익힙니다.',
+    video: {
+      title: 'Python이란 무엇인가? — 5분만에 이해하는 인기의 비결',
+      description: '왜 Python이 전 세계에서 가장 사랑받는 언어가 되었는지, 그 매력을 압축적으로 전합니다.',
+      url: 'https://youtu.be/x1VFfTz30VE?si=3wBFc0CtpCJF3u15'
+    },
+    blocks: [
+      {
+        emoji: '🌟',
+        title: 'Python — "사람이 읽기 쉬운 언어"',
+        content: `
+          <p>지금까지 우리는 <strong>아두이노 C 언어</strong>로 코딩했어요. 이제부터 우리 로봇의 '눈'을 만들기 위해 새로운 언어 <strong>Python(파이썬)</strong>을 배웁니다.</p>
+
+          <p>왜 Python인가? 가장 인기 있어서일까요? 그것도 이유 중 하나지만, 진짜 이유는 따로 있어요:</p>
+
+          <div class="image-grid-responsive">
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">📖</div>
+              <div class="image-grid-card-title">읽기 쉬움</div>
+              <div class="image-grid-card-desc">영어 문장처럼 자연스러움<br>"if x > 5:" → 만약 x가 5보다 크면</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🔧</div>
+              <div class="image-grid-card-title">라이브러리 풍부</div>
+              <div class="image-grid-card-desc">OpenCV, NumPy, TensorFlow<br>이미 만들어진 도구가 무한대</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🤖</div>
+              <div class="image-grid-card-title">AI의 표준 언어</div>
+              <div class="image-grid-card-desc">ChatGPT, Tesla AI, Google AI<br>모두 Python 기반</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🌐</div>
+              <div class="image-grid-card-title">어디든 동작</div>
+              <div class="image-grid-card-desc">Windows, Mac, Linux<br>심지어 라즈베리파이까지</div>
+            </div>
+          </div>
+
+          <h4>📊 다른 언어와 비교 — 어떤 차이가 있나?</h4>
+
+          <div class="video-card" style="margin: 20px 0; border-radius: 16px;">
+            <div class="video-meta">
+              <div class="video-meta-eyebrow">🎬 보충 영상 — 언어 비교</div>
+              <h3>Python vs 다른 언어 — 어떤 게 좋을까?</h3>
+              <p>Java, JavaScript, C++와 Python을 비교하며 각 언어가 어디에 강한지 알아봅니다.</p>
+            </div>
+            <div class="video-iframe-wrap">
+              <iframe src="https://www.youtube.com/embed/51xHA3TeIE8?modestbranding=1&rel=0"
+                title="Python vs 다른 언어" allowfullscreen></iframe>
+            </div>
+            <div class="video-warning">
+              <p>⚠️ 영상이 안 보이면 아래 노란 버튼을 눌러 새 창에서 보세요.</p>
+              <p>학교 와이파이가 막혀있다면 모바일 데이터 또는 카카오톡 단톡방의 링크를 사용하세요.</p>
+            </div>
+            <a href="https://youtu.be/51xHA3TeIE8?si=2ewDCN6yYEtQZL0M" target="_blank" rel="noopener noreferrer" class="video-action-btn">
+              <span>▶️</span><span>YouTube에서 영상 보기</span>
+            </a>
+          </div>
+        `
+      },
+      {
+        emoji: '🧠',
+        title: '【초보자 필독】 컴퓨터의 "예/아니오" 판단법 — 불대수와 비교연산자',
+        content: `
+          <p>본격적으로 Python 코드를 보기 전, <strong>모든 프로그래밍 언어의 공통 기초</strong>를 한 번 정리하고 갈게요. 이 부분이 헷갈리면 앞으로 모든 if문이 외계어처럼 보입니다. <strong>딱 10분만 집중!</strong> 🧠</p>
+
+          <h4>🌟 핵심 한 문장</h4>
+          <div class="tip-box">
+            <span class="tip-emoji">💡</span>
+            <div class="tip-content">
+              <p class="tip-title">컴퓨터는 결국 두 가지만 안다 — <strong>True(참, 1)</strong> 또는 <strong>False(거짓, 0)</strong></p>
+              <p class="tip-body">"오늘 비가 와?" → True/False. "잔액이 있어?" → True/False. "센서가 빨간색을 봤어?" → True/False. 컴퓨터의 모든 판단은 이 둘 중 하나로 압축됩니다. 아무리 복잡한 AI도 결국 수많은 True/False 판단의 조합일 뿐이에요.</p>
+            </div>
+          </div>
+
+          <h4>📐 1단계 — 비교 연산자 (값을 비교해서 True/False 만들기)</h4>
+          <p>"비교"란 두 값을 견주어 True 또는 False를 만드는 것입니다. Python·아두이노 모두 동일:</p>
+
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 19px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">기호</th>
+                <th style="padding: 12px; text-align: left;">의미</th>
+                <th style="padding: 12px; text-align: left;">예시</th>
+                <th style="padding: 12px; text-align: left;">결과</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;"><code>==</code></td>
+                <td style="padding: 10px;"><strong>같다</strong> (등호 2개!)</td>
+                <td style="padding: 10px;"><code>5 == 5</code></td>
+                <td style="padding: 10px;"><strong style="color: #059669;">True</strong></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;"><code>!=</code></td>
+                <td style="padding: 10px;"><strong>다르다</strong> (느낌표=NOT)</td>
+                <td style="padding: 10px;"><code>5 != 3</code></td>
+                <td style="padding: 10px;"><strong style="color: #059669;">True</strong></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;"><code>&gt;</code></td>
+                <td style="padding: 10px;">크다</td>
+                <td style="padding: 10px;"><code>5 &gt; 3</code></td>
+                <td style="padding: 10px;"><strong style="color: #059669;">True</strong></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;"><code>&lt;</code></td>
+                <td style="padding: 10px;">작다</td>
+                <td style="padding: 10px;"><code>5 &lt; 3</code></td>
+                <td style="padding: 10px;"><strong style="color: #DC2626;">False</strong></td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;"><code>&gt;=</code></td>
+                <td style="padding: 10px;">크거나 같다 (이상)</td>
+                <td style="padding: 10px;"><code>5 &gt;= 5</code></td>
+                <td style="padding: 10px;"><strong style="color: #059669;">True</strong></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px;"><code>&lt;=</code></td>
+                <td style="padding: 10px;">작거나 같다 (이하)</td>
+                <td style="padding: 10px;"><code>5 &lt;= 3</code></td>
+                <td style="padding: 10px;"><strong style="color: #DC2626;">False</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning-box">
+            <p><strong>⚠️ 가장 흔한 실수 — <code>=</code> vs <code>==</code></strong></p>
+            <ul style="font-size: 19px;">
+              <li><code>x = 5</code> → 등호 1개 = <strong>"x에 5를 저장하라"</strong> (할당)</li>
+              <li><code>x == 5</code> → 등호 2개 = <strong>"x가 5와 같은가?"</strong> (비교)</li>
+              <li>if문 안에서는 반드시 <code>==</code> 사용! <code>if (x = 5)</code>라고 쓰면 비교가 아니라 할당이 일어나서 의도와 전혀 다르게 동작해요.</li>
+            </ul>
+          </div>
+
+          <h4>🔀 2단계 — 불대수 (Boolean Algebra) — True/False를 조합하기</h4>
+          <p>비교 결과들(True/False)을 <strong>"그리고", "또는", "아니다"</strong>로 묶어 더 복잡한 판단을 만듭니다. 이게 바로 <strong>불대수(Boolean Algebra)</strong>입니다.</p>
+
+          <p style="font-size: 18px; color: var(--maumgil-text-sub);">📜 1854년 영국 수학자 <strong>조지 불(George Boole)</strong>이 처음 정리해서 그의 이름을 따 "불대수"라 불러요. 인터넷 검색에서 "AND", "OR", "NOT" 옵션을 본 적 있죠? 다 같은 원리입니다.</p>
+
+          <h4>🎯 핵심 3가지 연산</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px;">의미</th>
+                <th style="padding: 12px;">Python</th>
+                <th style="padding: 12px;">아두이노 / C</th>
+                <th style="padding: 12px;">언제 True가 되나?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">AND (그리고)</td>
+                <td style="padding: 10px;"><code>and</code></td>
+                <td style="padding: 10px;"><code>&&</code></td>
+                <td style="padding: 10px;"><strong>둘 다</strong> True일 때만</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">OR (또는)</td>
+                <td style="padding: 10px;"><code>or</code></td>
+                <td style="padding: 10px;"><code>||</code></td>
+                <td style="padding: 10px;"><strong>하나라도</strong> True면</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: 700;">NOT (아니다)</td>
+                <td style="padding: 10px;"><code>not</code></td>
+                <td style="padding: 10px;"><code>!</code></td>
+                <td style="padding: 10px;">결과를 <strong>반대로 뒤집음</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🍔</span>
+            <div class="tip-content">
+              <p class="tip-title">맥도날드 비유로 단숨에 이해</p>
+              <p class="tip-body">
+                <strong>AND (그리고)</strong>: "햄버거 <strong>&</strong> 콜라" — 둘 다 있어야 세트<br>
+                <strong>OR (또는)</strong>: "콜라 <strong>또는</strong> 사이다" — 하나만 있어도 OK<br>
+                <strong>NOT (아니다)</strong>: "양파 <strong>빼고</strong>" — 양파가 있으면 NO, 없으면 YES (정반대로 뒤집기)
+              </p>
+            </div>
+          </div>
+
+          <h4>📊 진리표(Truth Table) — 외워두면 평생 안 헷갈림</h4>
+
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 19px;">
+            <thead>
+              <tr style="background: linear-gradient(135deg, var(--maumgil-purple-50), var(--maumgil-purple-100));">
+                <th style="padding: 10px; border: 1px solid var(--maumgil-border);">A</th>
+                <th style="padding: 10px; border: 1px solid var(--maumgil-border);">B</th>
+                <th style="padding: 10px; border: 1px solid var(--maumgil-border); background: #DCFCE7;">A <strong>and</strong> B</th>
+                <th style="padding: 10px; border: 1px solid var(--maumgil-border); background: #DBEAFE;">A <strong>or</strong> B</th>
+                <th style="padding: 10px; border: 1px solid var(--maumgil-border); background: #FEE2E2;"><strong>not</strong> A</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center;">
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #D1FAE5;"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #DBEAFE;"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #FEE2E2;"><strong style="color: #DC2626;">False</strong></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #FEE2E2;"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #D1FAE5;"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #FEE2E2;"><strong style="color: #DC2626;">False</strong></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #FEE2E2;"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #D1FAE5;"><strong style="color: #059669;">True</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #D1FAE5;"><strong style="color: #059669;">True</strong></td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border);"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #FEE2E2;"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #FEE2E2;"><strong style="color: #DC2626;">False</strong></td>
+                <td style="padding: 10px; border: 1px solid var(--maumgil-border); background: #D1FAE5;"><strong style="color: #059669;">True</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p><strong>읽는 법</strong>: 1행 → "A=True, B=True일 때 (A and B)는 True" / 2행 → "A=True, B=False일 때 (A and B)는 False" ... 이런 식.</p>
+
+          <h4>🍰 일상 사례로 다시 한 번</h4>
+
+          <ul>
+            <li><strong>AND (그리고)</strong>: <em>"수능 등급이 1등급이고 <strong>and</strong> 면접 점수가 90점 이상이면 합격"</em> → 둘 중 하나만 만족하면 불합격</li>
+            <li><strong>OR (또는)</strong>: <em>"공휴일이거나 <strong>or</strong> 일요일이면 휴무"</em> → 둘 중 하나만 맞아도 휴무</li>
+            <li><strong>NOT (아니다)</strong>: <em>"비가 오지 않으면 <strong>not</strong> 운동"</em> → 비 오면 True지만, not으로 뒤집어서 False → 운동 안 함</li>
+          </ul>
+
+          <h4>💻 실전 코드로 보기 — 우리가 만들 자율주행 로봇 코드</h4>
+
+          <p>1차시~6차시에서 본 아두이노 코드를 다시 봅시다. 이제는 의미가 보일 거예요!</p>
+
+          <div class="code-block-header">
+            <span>📄 어보이더 코드 (aimaker_avid_20.ino)</span>
+          </div>
+          <div class="code-block"><pre>// 두 센서 모두 장애물 감지 시 정면 회피
+if (leftDetected <strong style="color: #FACC15;">&&</strong> rightDetected) {
+    // 정면 회피 (후진 후 좌회전)
+}
+
+// 왼쪽이거나 오른쪽 중 하나라도 감지되면
+if (leftDetected <strong style="color: #FACC15;">||</strong> rightDetected) {
+    // 어떤 회피든 시작
+}
+
+// 아무것도 감지 안 되면
+if (<strong style="color: #FACC15;">!</strong>leftDetected <strong style="color: #FACC15;">&&</strong> <strong style="color: #FACC15;">!</strong>rightDetected) {
+    // 깨끗 → 전진
+}</pre></div>
+
+          <div class="code-block-header">
+            <span>📄 같은 로직을 Python으로 (12차시 자율주행 코드)</span>
+          </div>
+          <div class="code-block"><pre>// Python은 and / or / not 사용 (영어 단어!)
+if red_count >= 5 <strong style="color: #FACC15;">and</strong> last_cmd != 'S':
+    send_command('S')   # 빨간색 5프레임 연속 + 이전 명령이 S가 아닐 때만
+
+if area > 3000 <strong style="color: #FACC15;">or</strong> contour_count > 10:
+    print("뭔가 큰 물체 감지!")
+
+if <strong style="color: #FACC15;">not</strong> cap.isOpened():
+    print("카메라가 열리지 않음!")</pre></div>
+
+          <div class="warning-box">
+            <p><strong>📌 절대 헷갈리지 말 것 — 언어별 표기 차이</strong></p>
+            <table style="width: 100%; margin-top: 8px; font-size: 18px;">
+              <tr style="background: white;">
+                <th style="padding: 8px; text-align: left;">의미</th>
+                <th style="padding: 8px;">Python</th>
+                <th style="padding: 8px;">아두이노/C</th>
+                <th style="padding: 8px;">JavaScript</th>
+              </tr>
+              <tr>
+                <td style="padding: 8px;">그리고</td>
+                <td style="padding: 8px; text-align: center;"><code>and</code></td>
+                <td style="padding: 8px; text-align: center;"><code>&&</code></td>
+                <td style="padding: 8px; text-align: center;"><code>&&</code></td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;">또는</td>
+                <td style="padding: 8px; text-align: center;"><code>or</code></td>
+                <td style="padding: 8px; text-align: center;"><code>||</code></td>
+                <td style="padding: 8px; text-align: center;"><code>||</code></td>
+              </tr>
+              <tr>
+                <td style="padding: 8px;">아니다</td>
+                <td style="padding: 8px; text-align: center;"><code>not</code></td>
+                <td style="padding: 8px; text-align: center;"><code>!</code></td>
+                <td style="padding: 8px; text-align: center;"><code>!</code></td>
+              </tr>
+            </table>
+            <p style="margin-top: 10px; font-size: 18px;">💡 <strong>Python만 영어 단어를 쓰고, 나머지 대부분 언어는 기호(<code>&&</code>, <code>||</code>, <code>!</code>)를 씁니다.</strong> Python이 "사람에게 친절한 언어"로 불리는 이유 중 하나죠!</p>
+          </div>
+
+          <h4>🎯 셀프 테스트 — 여러분이 직접 풀어보기</h4>
+
+          <p>아래 식들의 결과(True/False)를 머릿속에서 계산해보세요. 진리표를 보면서 풀어도 OK!</p>
+
+          <ol>
+            <li><code>(5 &gt; 3) and (10 &lt; 2)</code> → ?</li>
+            <li><code>(5 &gt; 3) or (10 &lt; 2)</code> → ?</li>
+            <li><code>not (5 == 5)</code> → ?</li>
+            <li><code>(7 &gt;= 7) and not (3 &gt; 1)</code> → ?</li>
+          </ol>
+
+          <details style="margin-top: 16px; background: var(--maumgil-purple-50); padding: 14px; border-radius: 12px;">
+            <summary style="font-weight: 700; cursor: pointer; font-size: 19px; color: var(--maumgil-purple-700);">🎁 정답 보기 (클릭)</summary>
+            <ol style="margin-top: 12px; font-size: 19px;">
+              <li><strong style="color: #DC2626;">False</strong> — (True) and (False) → 둘 다 True여야 하는데 한쪽이 False라서 False</li>
+              <li><strong style="color: #059669;">True</strong> — (True) or (False) → 하나라도 True면 OR은 True</li>
+              <li><strong style="color: #DC2626;">False</strong> — (5==5)는 True인데 not으로 뒤집어서 False</li>
+              <li><strong style="color: #DC2626;">False</strong> — (True) and not(True) = (True) and (False) = False</li>
+            </ol>
+          </details>
+
+          <p style="font-size: 22px; text-align: center; margin: 30px 0; padding: 20px; background: linear-gradient(135deg, var(--maumgil-yellow), #FBBF24); border-radius: 16px; color: var(--maumgil-purple-900); font-weight: 700;">
+            🌟 이제 모든 if문이 한국어처럼 읽힐 거예요! 다음으로 넘어갑시다.
+          </p>
+        `
+      },
+      {
+        emoji: '🛠️',
+        title: 'Python 설치 — IDLE로 첫 코드 실행하기',
+        content: `
+          <p>오늘 우리가 사용할 환경은 <strong>Python 3.14.4 (또는 그 이상) + 내장 IDLE</strong>입니다. 학교 노트북에 이미 설치되어 있을 거예요. 안 되어 있다면 강사의 안내를 따라 설치하세요.</p>
+
+          <h4>🖥️ IDLE이란?</h4>
+          <p><strong>IDLE = Integrated Development and Learning Environment</strong>. Python을 설치하면 함께 깔리는 무료 개발 도구예요. VS Code, PyCharm 같은 전문 도구 대신 IDLE을 쓰는 이유는 <strong>가장 가볍고 가장 단순하기</strong> 때문입니다.</p>
+
+          <h4>📝 IDLE 사용법 4단계</h4>
+          <ol>
+            <li><strong>IDLE 실행</strong> — 시작 메뉴에서 "IDLE" 검색 → 클릭</li>
+            <li><strong>새 파일 만들기</strong> — File → New File (또는 Ctrl + N)</li>
+            <li><strong>코드 입력</strong> — 새 창에 코드를 입력하거나 복사·붙여넣기</li>
+            <li><strong>저장 + 실행</strong> — Ctrl + S로 저장 → F5 키로 실행</li>
+          </ol>
+
+          <div class="warning-box">
+            <p><strong>⚠️ Python 파일 저장 규칙</strong></p>
+            <ul style="font-size: 19px;">
+              <li>파일 이름은 <strong>영문 + 언더스코어(_) + 숫자</strong>만 사용 (예: <code>01_python_basics.py</code>)</li>
+              <li>한글, 공백, 특수문자 금지! (실행 안 됨)</li>
+              <li>확장자는 반드시 <code>.py</code></li>
+              <li>저장 폴더는 <code>C:\\Users\\사용자명\\Documents\\PythonStudy</code> 추천 (한글 경로 피하기)</li>
+            </ul>
+          </div>
+        `
+      },
+      {
+        emoji: '🐍',
+        title: '실습 1 — 01_python_basics.py 따라하기',
+        content: `
+          <p>강사가 패들렛에 올린 <strong>01_python_basics.py</strong>를 IDLE에서 열어보세요. 7개의 핵심 개념이 차례로 등장합니다:</p>
+
+          <h4>📚 학습 순서 (코드 따라하며 익히기)</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">단원</th>
+                <th style="padding: 12px; text-align: left;">학습 내용</th>
+                <th style="padding: 12px; text-align: left;">핵심 개념</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">①</td>
+                <td style="padding: 10px;">print() 함수</td>
+                <td style="padding: 10px;">화면에 글자 출력</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">②</td>
+                <td style="padding: 10px;">변수(Variable)</td>
+                <td style="padding: 10px;">값을 담는 상자 (str, int, float, bool)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">③</td>
+                <td style="padding: 10px;">연산(Calculation)</td>
+                <td style="padding: 10px;">+ - * / // % ** 연산자</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">④</td>
+                <td style="padding: 10px;">조건문(if/else)</td>
+                <td style="padding: 10px;">상황에 따른 분기</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">⑤</td>
+                <td style="padding: 10px;">함수(def)</td>
+                <td style="padding: 10px;">자주 쓰는 동작 묶기</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">⑥</td>
+                <td style="padding: 10px;">함수 호출</td>
+                <td style="padding: 10px;">만든 함수 실제 사용</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px;">⑦</td>
+                <td style="padding: 10px;">정리·도전 과제</td>
+                <td style="padding: 10px;">자기 것으로 만들기</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>📝 코드 일부 미리보기 — print()와 변수</h4>
+
+          <div class="code-block-header">
+            <span>📄 01_python_basics.py (일부)</span>
+          </div>
+          <div class="code-block"><pre># 1. print() 함수
+  print("안녕하세요! 파이썬입니다.")
+  print("Hello, OpenCV!")
+
+  # 2. 변수
+  name       = "AI 메이크웨어"   # 문자열(str)
+  speed      = 3                 # 정수(int)
+  is_running = True              # 불리언(bool)
+
+  print("로봇 이름:", name)
+  print("속도:", speed)
+  print("작동 중:", is_running)</pre></div>
+
+          <h4>🎯 실행 결과는?</h4>
+          <div class="code-block-header">
+            <span>📄 출력 화면</span>
+          </div>
+          <div class="code-block"><pre>안녕하세요! 파이썬입니다.
+  Hello, OpenCV!
+  로봇 이름: AI 메이크웨어
+  속도: 3
+  작동 중: True</pre></div>
+
+          <div class="tip-box">
+            <span class="tip-emoji">💡</span>
+            <div class="tip-content">
+              <p class="tip-title">아두이노 vs Python 첫 충격</p>
+              <p class="tip-body">아두이노에서는 <code>int speed = 3;</code> 처럼 <strong>타입을 미리 선언</strong>해야 했어요. Python은 그런 거 없습니다. <code>speed = 3</code> 만 쓰면 됩니다. 세미콜론(;)도 없고, 중괄호({})도 없어요. <strong>"파이썬은 타이핑이 절반"</strong>이라는 말이 있는 이유죠.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🎮',
+        title: '실습 2 — 직접 코드 수정하며 익히기',
+        content: `
+          <h4>📝 미션 1 — 자기 이름 출력하기</h4>
+          <p>01_python_basics.py 파일에서 <code>name = "AI 메이크웨어"</code> 부분을 자기 이름으로 바꾸고 실행해보세요!</p>
+
+          <div class="code-block-header">
+            <span>📄 미션 1 코드</span>
+          </div>
+          <div class="code-block"><pre>name = "김인천"   # ← 여기를 자기 이름으로!
+  print(f"안녕하세요, {name}님! 반갑습니다.")</pre></div>
+
+          <h4>📝 미션 2 — 조건문으로 배터리 알림 만들기</h4>
+          <p>아래 코드를 IDLE에 붙여넣고 <code>battery</code> 값을 바꿔가며 실행해보세요!</p>
+
+          <div class="code-block-header">
+            <span>📄 미션 2 코드</span>
+          </div>
+          <div class="code-block"><pre>battery = 25   # ← 이 값을 10, 25, 50, 80으로 바꿔보기
+
+  if battery < 30:
+      print("⚠️ 배터리 부족! 충전이 필요합니다.")
+  elif battery < 60:
+      print("🔋 배터리 절반. 적당히 사용 가능합니다.")
+  else:
+      print("✅ 배터리 충분! 마음껏 쓰세요.")</pre></div>
+
+          <h4>📝 미션 3 — 함수로 인사 시스템 만들기</h4>
+          <div class="code-block-header">
+            <span>📄 미션 3 코드</span>
+          </div>
+          <div class="code-block"><pre>def say_hello(name, time_of_day):
+      if time_of_day == "morning":
+          print(f"좋은 아침입니다, {name}님!")
+      elif time_of_day == "evening":
+          print(f"좋은 저녁입니다, {name}님.")
+      else:
+          print(f"안녕하세요, {name}님!")
+
+  # 함수 호출
+  say_hello("인천남고1-1", "morning")
+  say_hello("AI동아리", "evening")
+  say_hello("미래 개발자", "afternoon")</pre></div>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🚀</span>
+            <div class="tip-content">
+              <p class="tip-title">막히면 검색!</p>
+              <p class="tip-body">코드가 안 돌아가도 당황하지 마세요. <strong>오류 메시지를 그대로 구글에 검색하면 99% 답이 있어요.</strong> "Python TypeError: ..." 처럼 오류 첫 줄만 복사해서 검색하세요. 이게 진짜 개발자의 능력입니다 — 모든 걸 외우는 게 아니라 <strong>찾을 줄 아는 것</strong>!</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '📚',
+        title: '깊이 있는 이해 — Python 탄생 비화',
+        content: `
+          <div class="knowledge-card">
+            <span class="knowledge-eyebrow">📚 깊이 있는 이해</span>
+            <h4>Python — "Monty Python에서 영감 받은 언어"</h4>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">📖 탄생 스토리</p>
+              <p>1989년 크리스마스 휴가, 네덜란드의 프로그래머 <strong>귀도 반 로썸(Guido van Rossum)</strong>이 심심해서 만든 언어가 시작이었어요. 이름은 좋아하던 영국 코미디 그룹 <strong>"Monty Python"</strong>에서 따왔습니다 (뱀과는 무관!). 1991년 첫 공개 후 30여 년 만에 세계 1위 언어가 되었어요.</p>
+            </div>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">🌟 일상 속 Python 사용 사례</p>
+              <ul>
+                <li><strong>인스타그램</strong> — 백엔드 서버 전체가 Python (Django 프레임워크)</li>
+                <li><strong>유튜브</strong> — 추천 알고리즘 + 영상 처리 파이프라인</li>
+                <li><strong>넷플릭스</strong> — 영상 추천 + 데이터 분석</li>
+                <li><strong>스포티파이</strong> — 음악 추천 시스템</li>
+                <li><strong>NASA</strong> — 우주 임무 데이터 분석</li>
+                <li><strong>마음길</strong> — 아쿠아포닉스 센서 데이터 분석에 Python 사용 중!</li>
+              </ul>
+            </div>
+
+            <div class="knowledge-section">
+              <p class="knowledge-section-title">📊 숫자로 보는 Python의 위상</p>
+            </div>
+
+            <div class="fact-grid">
+              <div class="fact-item"><div class="fact-num">1991</div><div class="fact-label">첫 공개</div></div>
+              <div class="fact-item"><div class="fact-num">#1</div><div class="fact-label">2024년 인기 1위</div></div>
+              <div class="fact-item"><div class="fact-num">3.14.4</div><div class="fact-label">현재 사용 버전</div></div>
+              <div class="fact-item"><div class="fact-num">35년</div><div class="fact-label">언어 역사</div></div>
+            </div>
+          </div>
+        `
+      }
+    ],
+    quiz: [
+      {
+        type: 'multiple',
+        question: 'Python이 아두이노 C 언어보다 쉬운 이유로 가장 적절한 것은?',
+        options: [
+          '컴파일이 빨라서',
+          'AI가 자동으로 코드를 만들어줘서',
+          '한글로 코딩이 가능해서',
+          '영어 문장처럼 읽히고 세미콜론·중괄호 없이 들여쓰기로 구분하기 때문'
+        ],
+        answer: 3,
+        explanation: 'Python은 사람이 자연스럽게 읽을 수 있도록 설계되었습니다. <code>if x > 5:</code> 처럼 영어 문장 같고, 세미콜론·중괄호 없이 들여쓰기로 코드 구조를 표현해요. 이것이 "초보자에게 가장 친절한 언어"라 불리는 이유입니다.'
+      },
+      {
+        type: 'multiple',
+        question: 'Python에서 변수에 문자열을 저장할 때 따옴표가 필요한가?',
+        options: [
+          '필요하다 (\' \' 또는 \" \"로 감싼다)',
+          '필요 없다 (그냥 입력)',
+          '문자열만 따옴표 필요, 한글은 따옴표 없이도 됨',
+          '한 글자는 따옴표 없이도 됨'
+        ],
+        answer: 0,
+        explanation: '문자열은 반드시 따옴표(작은따옴표 \' \' 또는 큰따옴표 \" \")로 감싸야 합니다. <code>name = AI</code>처럼 따옴표 없이 쓰면 Python이 AI를 변수로 인식해서 오류가 나요.'
+      },
+      {
+        type: 'multiple',
+        question: 'Python 파일을 IDLE에서 실행하는 단축키는?',
+        options: ['Ctrl + R', 'F5', 'Ctrl + Enter', 'F12'],
+        answer: 1,
+        explanation: 'IDLE에서는 F5 키로 현재 파일을 실행합니다. (참고: 아두이노 IDE는 Ctrl + U였죠? 도구마다 다르니 헷갈리지 마세요!)'
+      },
+      {
+        type: 'multiple',
+        question: 'Python의 들여쓰기(스페이스 4칸 또는 탭)가 중요한 이유는?',
+        options: [
+          '코드 가독성을 위한 권장 사항일 뿐',
+          '들여쓰기 없으면 색깔이 예뻐지지 않아서',
+          '들여쓰기로 코드 블록의 시작과 끝을 구분하기 때문 (필수!)',
+          '강사 선생님이 좋아해서'
+        ],
+        answer: 2,
+        explanation: 'Python은 중괄호({}) 대신 들여쓰기로 코드 블록을 구분합니다. <code>if x > 5:</code> 다음 줄이 들여쓰기 되어있어야 if 안의 코드로 인식돼요. 들여쓰기를 잘못하면 "IndentationError"가 발생합니다.'
+      },
+      {
+        type: 'short',
+        question: 'Python에서 화면에 글자를 출력하는 가장 기본적인 함수의 이름은? (예: 함수명만, 괄호 없이)',
+        answer: 'print',
+        explanation: 'print() 함수는 Python의 가장 기본적인 출력 함수입니다. 괄호 안에 출력할 내용을 넣어요. 예: print("Hello, World!")'
+      }
+    ]
+  },
+
+  /* ============================================================
+     ★★★ 11차시 = 5/5 ⑤ : OpenCV 카메라 + 색상 감지
+     ============================================================ */
+  {
+    day: '5/5(월)',
+    tab: '⑤ OpenCV 카메라+색상',
+    title: '📷 OpenCV — 로봇에게 진짜 눈을 달아주다',
+    description: 'NeuroCam2 카메라를 PC에 연결하고 OpenCV로 영상을 띄웁니다. 그 다음 HSV 색상 공간으로 빨간색·초록색·파란색을 골라내는 마법을 배웁니다.',
+    video: {
+      title: 'OpenCV 데모 — 카메라 + AI 비전 응용 사례',
+      description: 'OpenCV로 만들 수 있는 신기한 기능들 — 얼굴 인식, 색상 트래킹, 동작 감지까지!',
+      url: 'https://youtu.be/QMowMmIs4D8'
+    },
+    blocks: [
+      {
+        emoji: '🌟',
+        title: 'OpenCV란? — "컴퓨터 비전의 표준 도서관"',
+        content: `
+          <p><strong>OpenCV(Open Source Computer Vision)</strong>는 카메라 영상을 다루는 Python 라이브러리입니다. 1999년 인텔에서 시작해 지금은 전 세계 자율주행차·로봇·CCTV가 사용하는 표준 도구가 되었어요.</p>
+
+          <h4>🛠️ 사전 준비 — OpenCV 설치 (1회만)</h4>
+          <p>강사 노트북에는 이미 설치되어 있을 거예요. 만약 직접 설치해야 한다면:</p>
+
+          <div class="code-block-header">
+            <span>📄 터미널(명령프롬프트)에서 1줄</span>
+          </div>
+          <div class="code-block"><pre>pip install opencv-python</pre></div>
+
+          <div class="tip-box">
+            <span class="tip-emoji">💡</span>
+            <div class="tip-content">
+              <p class="tip-title">"pip"이 뭐예요?</p>
+              <p class="tip-body"><strong>pip</strong>은 Python의 라이브러리 다운로드 도구입니다. <code>pip install 도서관이름</code> 한 줄로 누군가 만들어둔 코드를 자기 컴퓨터에 가져올 수 있어요. 마치 앱스토어와 같은 개념입니다 — 직접 만들 필요 없이 다운받아 쓰는 거죠!</p>
+            </div>
+          </div>
+
+          <h4>🎯 오늘 할 것 2가지</h4>
+          <ol>
+            <li><strong>02_camera_open.py</strong> — 카메라를 열어서 화면에 영상 띄우기</li>
+            <li><strong>03_color_detection.py</strong> — 영상에서 특정 색상만 골라내기 (HSV 트랙바 활용)</li>
+          </ol>
+        `
+      },
+      {
+        emoji: '📷',
+        title: '실습 1 — 02_camera_open.py (카메라 열기)',
+        content: `
+          <p>가장 먼저 할 일은 <strong>카메라가 잘 작동하는지 확인</strong>하는 것입니다. NeuroCam2를 USB로 PC에 연결하고 아래 코드를 실행해보세요.</p>
+
+          <div class="code-block-header">
+            <span>📄 02_camera_open.py 핵심 부분</span>
+          </div>
+          <div class="code-block"><pre>import cv2   # OpenCV 라이브러리 불러오기
+
+  # 카메라 연결 (0번 = 첫 번째 카메라)
+  cap = cv2.VideoCapture(0)
+
+  if not cap.isOpened():
+      print("카메라를 찾을 수 없습니다.")
+      print("VideoCapture(0) → (1) → (2) 순서로 번호를 바꿔보세요.")
+      exit()
+
+  # 해상도 설정 (640 x 480)
+  cap.set(cv2.CAP_PROP_FRAME_WIDTH,  640)
+  cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+  # 영상 출력 루프
+  while True:
+      ret, frame = cap.read()   # 카메라에서 1장 읽기
+      if not ret:
+          break
+      
+      cv2.imshow("카메라 영상", frame)   # 창에 표시
+      
+      # 'q' 키 누르면 종료
+      if cv2.waitKey(1) & 0xFF == ord('q'):
+          break
+
+  cap.release()              # 카메라 점유 해제
+  cv2.destroyAllWindows()    # 모든 창 닫기</pre></div>
+
+          <h4>🎯 실행 후 확인 사항</h4>
+          <ul>
+            <li>✅ 새로운 창이 뜨고 카메라 영상이 보이는가?</li>
+            <li>✅ 화면 중앙에 빨간 십자선이 보이는가?</li>
+            <li>✅ 'q' 키를 누르면 창이 닫히는가?</li>
+          </ul>
+
+          <div class="warning-box">
+            <p><strong>⚠️ 자주 발생하는 오류</strong></p>
+            <ul style="font-size: 19px;">
+              <li><strong>"카메라를 찾을 수 없습니다"</strong> → VideoCapture(0)을 (1) 또는 (2)로 바꿔보세요. 노트북 내장 카메라가 0번이라 NeuroCam2가 1번일 수 있어요.</li>
+              <li><strong>"ImportError: No module named cv2"</strong> → OpenCV가 설치되지 않음. <code>pip install opencv-python</code> 실행</li>
+              <li><strong>화면이 검은색</strong> → 카메라 렌즈 캡을 빼셨나요? 😄</li>
+              <li><strong>창이 떴다 바로 닫힘</strong> → 'q' 키 누르기 전에 한 번 창을 클릭해서 활성화해야 해요</li>
+            </ul>
+          </div>
+        `
+      },
+      {
+        emoji: '🎨',
+        title: '실습 2 — 03_color_detection.py (색상 감지)',
+        content: `
+          <p>이제 본격적인 비전 처리에 들어갑니다. <strong>"빨간색만 골라내라"</strong>를 코딩하려면 두 가지를 알아야 해요:</p>
+
+          <h4>📚 핵심 개념 1 — BGR vs HSV</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 19px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">색상 공간</th>
+                <th style="padding: 12px; text-align: left;">표현 방식</th>
+                <th style="padding: 12px; text-align: left;">색상 감지에서</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700;">BGR</td>
+                <td style="padding: 10px;">빨간 %, 초록 %, 파란 %</td>
+                <td style="padding: 10px;"><strong>조명 변화에 약함</strong> ❌</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: 700;">HSV</td>
+                <td style="padding: 10px;">색조 H, 채도 S, 명도 V</td>
+                <td style="padding: 10px;"><strong>조명 변화에도 안정적</strong> ✅</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p><strong>💡 비유</strong>: BGR은 "물감 비율"이고 HSV는 "색상 자체의 정체성"입니다. 형광등 vs 햇빛 아래 같은 빨간 사과를 봤을 때 BGR 값은 크게 달라지지만, HSV의 H(색조) 값은 거의 일정해요. <strong>그래서 우리는 HSV를 씁니다.</strong></p>
+
+          <h4>📚 핵심 개념 2 — 마스크(Mask)</h4>
+          <p>마스크는 <strong>"이 픽셀은 우리가 찾는 색이다 / 아니다"</strong>를 흰색(255)과 검정색(0)으로 표시한 흑백 이미지예요. 일종의 스텐실 도안입니다.</p>
+
+          <div class="code-block-header">
+            <span>📄 03_color_detection.py 핵심 흐름</span>
+          </div>
+          <div class="code-block"><pre>import cv2
+  import numpy as np
+
+  cap = cv2.VideoCapture(0)
+  cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+  cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+  # HSV 트랙바 창 만들기
+  cv2.namedWindow("HSV Trackbar")
+  cv2.createTrackbar("H Min", "HSV Trackbar",   0, 179, lambda x: None)
+  cv2.createTrackbar("H Max", "HSV Trackbar", 179, 179, lambda x: None)
+  cv2.createTrackbar("S Min", "HSV Trackbar", 100, 255, lambda x: None)
+  cv2.createTrackbar("S Max", "HSV Trackbar", 255, 255, lambda x: None)
+  cv2.createTrackbar("V Min", "HSV Trackbar", 100, 255, lambda x: None)
+  cv2.createTrackbar("V Max", "HSV Trackbar", 255, 255, lambda x: None)
+
+  while True:
+      ret, frame = cap.read()
+      if not ret: break
+      
+      # BGR → HSV 변환
+      hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+      
+      # 트랙바 값 읽기
+      h_min = cv2.getTrackbarPos("H Min", "HSV Trackbar")
+      # ... (나머지 5개 값도 동일)
+      
+      # 마스크 생성 (지정 범위 색상만 흰색)
+      lower = np.array([h_min, s_min, v_min])
+      upper = np.array([h_max, s_max, v_max])
+      mask = cv2.inRange(hsv, lower, upper)
+      
+      # 원본에 마스크 적용
+      result = cv2.bitwise_and(frame, frame, mask=mask)
+      
+      cv2.imshow("Original", frame)
+      cv2.imshow("Mask", mask)
+      cv2.imshow("Result", result)
+      
+      if cv2.waitKey(1) & 0xFF == ord('q'):
+          break
+
+  cap.release()
+  cv2.destroyAllWindows()</pre></div>
+
+          <h4>🎯 직접 해보기 — 트랙바 조절</h4>
+          <p>실행하면 4개 창이 뜹니다:</p>
+          <ol>
+            <li><strong>HSV Trackbar</strong> — 6개 슬라이더 (마우스로 조절)</li>
+            <li><strong>Original</strong> — 원본 카메라 영상</li>
+            <li><strong>Mask</strong> — 흰=감지된 영역, 검=미감지</li>
+            <li><strong>Result</strong> — 감지된 색상만 남긴 최종 결과</li>
+          </ol>
+
+          <h4>🌈 색깔별 HSV 추천 범위</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 17px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 10px;">색상</th>
+                <th style="padding: 10px;">H Min</th>
+                <th style="padding: 10px;">H Max</th>
+                <th style="padding: 10px;">S Min</th>
+                <th style="padding: 10px;">V Min</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 8px; font-weight: 700; color: red;">빨강 ①</td>
+                <td style="padding: 8px;">0</td><td style="padding: 8px;">10</td>
+                <td style="padding: 8px;">100</td><td style="padding: 8px;">100</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 8px; font-weight: 700; color: red;">빨강 ②</td>
+                <td style="padding: 8px;">160</td><td style="padding: 8px;">179</td>
+                <td style="padding: 8px;">100</td><td style="padding: 8px;">100</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 8px; font-weight: 700; color: orange;">주황</td>
+                <td style="padding: 8px;">10</td><td style="padding: 8px;">25</td>
+                <td style="padding: 8px;">100</td><td style="padding: 8px;">100</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 8px; font-weight: 700; color: #C8AA00;">노랑</td>
+                <td style="padding: 8px;">25</td><td style="padding: 8px;">35</td>
+                <td style="padding: 8px;">100</td><td style="padding: 8px;">100</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 8px; font-weight: 700; color: green;">초록</td>
+                <td style="padding: 8px;">40</td><td style="padding: 8px;">80</td>
+                <td style="padding: 8px;">100</td><td style="padding: 8px;">100</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px; font-weight: 700; color: blue;">파랑</td>
+                <td style="padding: 8px;">100</td><td style="padding: 8px;">130</td>
+                <td style="padding: 8px;">100</td><td style="padding: 8px;">100</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="warning-box">
+            <p><strong>🤔 빨간색이 두 구간인 이유</strong> — HSV의 H(색조)는 원형(0°~360°)인데 OpenCV는 절반인 0~179로 표현합니다. 빨강은 원의 양 끝(0과 179 근처)에 걸쳐있어 두 범위가 필요해요. (코드에서는 두 마스크를 만들고 더하면 됩니다: <code>mask = mask1 + mask2</code>)</p>
+          </div>
+        `
+      },
+      {
+        emoji: '🎮',
+        title: '미션 — 빨간 신호등 발견하기',
+        content: `
+          <p>실제 빨간 신호등(또는 빨간 카드)을 카메라에 비춰보고 트랙바를 조절해 빨간색만 깔끔하게 골라내보세요!</p>
+
+          <h4>🎯 단계별 미션</h4>
+          <ol>
+            <li><strong>준비물</strong> — 빨간 색지 1장 또는 빨간색 사인펜·펜 등</li>
+            <li><strong>실행</strong> — 03_color_detection.py 실행</li>
+            <li><strong>조절</strong> — H Min/Max, S Min/Max, V Min/Max를 위 표 참고해 조절</li>
+            <li><strong>확인</strong> — Mask 창에서 빨간 영역만 흰색으로 보이는가?</li>
+            <li><strong>도전</strong> — 노란색 카드도 비춰보고 노란색만 골라내보기</li>
+          </ol>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🔍</span>
+            <div class="tip-content">
+              <p class="tip-title">잘 안될 때 체크리스트</p>
+              <p class="tip-body">① 조명이 너무 어둡지 않나요? V Min을 100 → 50으로 낮춰보세요. ② 색이 너무 흐릿하지 않나요? 더 진한 색지를 사용하거나 채도(S Min)를 50으로 낮춰보세요. ③ 다른 빨간 물건이 같이 잡히나요? 그건 정상! 카메라는 색만 보고 의미를 모르니까요.</p>
+            </div>
+          </div>
+
+          <p style="font-size: 22px; text-align: center; margin: 30px 0; padding: 20px; background: var(--maumgil-yellow); border-radius: 16px; color: var(--maumgil-purple-900); font-weight: 700;">
+            🌟 이 빨간색 감지가 다음 차시 "빨간 신호등 멈추기" 게임의 핵심입니다!
+          </p>
+        `
+      }
+    ],
+    quiz: [
+      {
+        type: 'multiple',
+        question: 'OpenCV에서 카메라를 여는 함수는?',
+        options: [
+          'cv2.VideoCapture(0)',
+          'cv2.OpenCamera(0)',
+          'cv2.Camera.open(0)',
+          'cv2.camera_init(0)'
+        ],
+        answer: 0,
+        explanation: 'cv2.VideoCapture(번호) 가 카메라(또는 동영상 파일)를 여는 표준 함수입니다. 0번이 첫 번째 카메라, 1번이 두 번째 카메라예요.'
+      },
+      {
+        type: 'multiple',
+        question: '색상 감지에서 BGR 대신 HSV 색상 공간을 쓰는 이유는?',
+        options: [
+          'HSV가 더 예쁘게 보여서',
+          'HSV가 데이터 용량이 더 작아서',
+          '조명이 변해도 H(색조) 값이 비교적 일정하기 때문',
+          'Python이 BGR을 지원 안 해서'
+        ],
+        answer: 2,
+        explanation: 'BGR은 조명에 민감해서 같은 빨간 사과도 햇빛 아래와 형광등 아래에서 값이 크게 달라집니다. HSV는 H(색조)가 색의 정체성을 나타내 조명 변화에 강해요. 그래서 색상 감지에 표준으로 사용됩니다.'
+      },
+      {
+        type: 'multiple',
+        question: 'cv2.inRange(hsv, lower, upper) 함수의 결과는?',
+        options: [
+          '컬러 이미지 (감지된 부분 강조)',
+          '히스토그램 그래프',
+          '경계선 이미지 (윤곽선)',
+          '흑백 마스크 (감지=255 흰색, 비감지=0 검정)'
+        ],
+        answer: 3,
+        explanation: 'inRange는 마스크(mask)를 만드는 함수예요. 지정한 HSV 범위 안의 픽셀은 흰색(255), 범위 밖은 검정(0)으로 표시한 1채널 흑백 이미지를 반환합니다.'
+      },
+      {
+        type: 'multiple',
+        question: 'OpenCV에서 빨간색 감지 시 H 범위를 두 구간(0~10과 160~179)으로 나누는 이유는?',
+        options: [
+          '두 가지 빨강이 있어서 (밝은 빨강 + 어두운 빨강)',
+          'HSV의 H값이 원형이라 빨간색이 양 끝(0과 180 근처)에 걸쳐있기 때문',
+          'OpenCV의 버그 회피용',
+          '두 번 계산해야 더 정확해서'
+        ],
+        answer: 1,
+        explanation: 'HSV의 H(색조)는 원형 색상환을 표현합니다. 빨간색은 색상환의 0도(=360도)에 위치하는데, OpenCV는 0~179로 표현하므로 빨간색이 양 끝(0 근처와 179 근처)에 나뉘어 있어요. 그래서 두 마스크를 만들어 합쳐야 합니다.'
+      },
+      {
+        type: 'short',
+        question: 'OpenCV 영상 처리 코드를 종료하는 표준 키는? (한 글자만, 소문자)',
+        answer: 'q',
+        explanation: '관행적으로 \'q\' 키(quit의 약자)를 종료 키로 사용합니다. 코드에서는 <code>if cv2.waitKey(1) & 0xFF == ord(\'q\'): break</code> 형태로 처리해요.'
+      }
+    ]
+  },
+
+  /* ============================================================
+     ★★★ 12차시 = 5/5 ⑥ : 윤곽선 + 빨간 신호등 정확도 게임 (대미!)
+     ============================================================ */
+  {
+    day: '5/5(월)',
+    tab: '⑥ 빨간 신호등 게임',
+    title: '🚦 자율주행 완성 — 빨간 신호등 정확도 챔피언십',
+    description: '윤곽선으로 색깔 덩어리의 위치·크기를 측정하고, 마침내 아두이노와 연결해 진짜 자율주행 로봇을 완성합니다. 빨간 신호등 정확도 게임으로 Phase 2 마무리!',
+    video: {
+      title: 'AI 자율주행 신호등 인식 — 실제 사례',
+      description: '실제 자율주행차가 신호등을 어떻게 인식하는지, 그 원리를 우리가 만들 코드와 비교하며 봅니다.',
+      url: 'https://youtu.be/QaitIj5l1bQ?si=rS1FV4FQl9ravzXS'
+    },
+    blocks: [
+      {
+        emoji: '🌟',
+        title: '오늘의 미션 — "지금까지의 모든 것을 합친다"',
+        content: `
+          <p>드디어 마지막 차시입니다! 🎉 오늘은 11차시에서 배운 색상 감지에 한 가지를 더 추가합니다 — <strong>"감지된 색의 위치와 크기를 정확히 측정하고, 그 결과를 아두이노에 전달해 로봇을 움직이는 것"</strong>.</p>
+
+          <h4>🎯 지금까지의 학습이 합쳐지는 순간</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">차시</th>
+                <th style="padding: 12px; text-align: left;">배운 것</th>
+                <th style="padding: 12px; text-align: left;">오늘 어떻게 쓰이나?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">1~6차시</td>
+                <td style="padding: 10px;">아두이노·DC모터·LED·블록코딩</td>
+                <td style="padding: 10px;">로봇이 STOP/FORWARD 신호받아 동작</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">7~9차시</td>
+                <td style="padding: 10px;">4종 예제 + 라인트레이싱 + 챔피언십</td>
+                <td style="padding: 10px;">로봇 주행 안정성 + 정밀 제어</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">10차시</td>
+                <td style="padding: 10px;">Python 기초 + 불대수·비교연산</td>
+                <td style="padding: 10px;">전체 코드의 언어 + 논리 사고</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px;">11차시</td>
+                <td style="padding: 10px;">OpenCV 카메라 + HSV</td>
+                <td style="padding: 10px;">빨간색만 정확히 골라내기</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: 700; background: var(--maumgil-yellow);">12차시</td>
+                <td style="padding: 10px; font-weight: 700; background: var(--maumgil-yellow);">윤곽선 + 블루투스 무선 통신</td>
+                <td style="padding: 10px; font-weight: 700; background: var(--maumgil-yellow);">★ 모든 것을 통합 ★</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🚀</span>
+            <div class="tip-content">
+              <p class="tip-title">오늘 만들 결과물</p>
+              <p class="tip-body"><strong>"카메라에 빨간색이 일정 크기 이상으로 보이면 → 로봇이 자동으로 멈추고 → 빨간색이 사라지면 → 다시 출발하는"</strong> 진짜 자율주행 로봇! 이게 바로 테슬라가 신호등 앞에서 멈추는 원리와 동일합니다 (스케일은 작지만요).</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '👁️',
+        title: '실습 1 — 04_contour_detection.py (윤곽선 + 위치 측정)',
+        content: `
+          <p>색깔이 어디에 있는지만 알아도 부족해요. <strong>그 덩어리가 얼마나 큰지, 어느 좌표에 있는지</strong>까지 알아야 로봇이 똑똑한 판단을 할 수 있습니다.</p>
+
+          <h4>📚 핵심 개념 1 — 윤곽선(Contour)</h4>
+          <p>윤곽선 = 흰색 영역의 <strong>경계선 좌표 모음</strong>. 마스크에서 흰 덩어리가 어떤 모양인지 알려주는 외곽 라인이에요.</p>
+
+          <h4>📚 핵심 개념 2 — 모멘트(Moment) = "질량 중심"</h4>
+          <p>모멘트는 물리학에서 무게중심을 구하는 개념입니다. 픽셀을 질량으로 보고 평균을 내면 그 덩어리의 중심점(cx, cy)이 나와요.</p>
+
+          <div class="code-block-header">
+            <span>📄 04_contour_detection.py 핵심 흐름</span>
+          </div>
+          <div class="code-block"><pre>import cv2
+  import numpy as np
+
+  # 검은색 라인 감지 (HSV 범위)
+  LOWER_COLOR = np.array([0,   0,   0  ])
+  UPPER_COLOR = np.array([179, 255, 80 ])
+
+  cap = cv2.VideoCapture(0)
+  cap.set(cv2.CAP_PROP_FRAME_WIDTH,  640)
+  cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+  while True:
+      ret, frame = cap.read()
+      if not ret: break
+
+      # ① 노이즈 제거 (블러)
+      blurred = cv2.GaussianBlur(frame, (5, 5), 0)
+
+      # ② BGR → HSV → 마스크 생성
+      hsv  = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
+      mask = cv2.inRange(hsv, LOWER_COLOR, UPPER_COLOR)
+
+      # ③ 모폴로지 연산 (마스크 정리)
+      kernel = np.ones((5, 5), np.uint8)
+      mask = cv2.erode(mask,  kernel, iterations=1)   # 깎기
+      mask = cv2.dilate(mask, kernel, iterations=1)   # 부풀리기
+
+      # ④ 윤곽선 찾기
+      contours, _ = cv2.findContours(mask,
+                                     cv2.RETR_EXTERNAL,
+                                     cv2.CHAIN_APPROX_SIMPLE)
+
+      if len(contours) > 0:
+          # ⑤ 가장 큰 윤곽선 선택
+          largest = max(contours, key=cv2.contourArea)
+          area = cv2.contourArea(largest)
+
+          # ⑥ 노이즈는 무시 (500px 이하)
+          if area > 500:
+              # ⑦ 모멘트로 중심점 계산
+              M = cv2.moments(largest)
+              if M["m00"] != 0:
+                  cx = int(M["m10"] / M["m00"])
+                  cy = int(M["m01"] / M["m00"])
+                  
+                  # ⑧ 방향 판단 (왼쪽/중앙/오른쪽)
+                  MARGIN = 50
+                  screen_center_x = frame.shape[1] // 2
+                  if cx < screen_center_x - MARGIN:
+                      direction = "LEFT (좌회전)"
+                  elif cx > screen_center_x + MARGIN:
+                      direction = "RIGHT (우회전)"
+                  else:
+                      direction = "FORWARD (직진)"
+                  print(direction)
+
+      if cv2.waitKey(1) & 0xFF == ord('q'):
+          break
+
+  cap.release()
+  cv2.destroyAllWindows()</pre></div>
+
+          <h4>🎯 코드의 5가지 핵심 단계</h4>
+          <ol>
+            <li><strong>전처리</strong> — 가우시안 블러로 노이즈 제거</li>
+            <li><strong>마스크</strong> — HSV 변환 후 inRange로 색 골라내기</li>
+            <li><strong>정리</strong> — erode·dilate(모폴로지)로 깔끔하게</li>
+            <li><strong>윤곽선</strong> — findContours로 흰 영역 외곽 추출</li>
+            <li><strong>중심점</strong> — moments로 무게중심 계산 → 방향 판단</li>
+          </ol>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🔬</span>
+            <div class="tip-content">
+              <p class="tip-title">erode와 dilate, 왜 둘 다 쓰나?</p>
+              <p class="tip-body"><strong>erode(침식)</strong>는 흰 영역을 깎아서 작은 노이즈 점을 없애요. 그런데 진짜 라인도 같이 얇아집니다. 그래서 같은 횟수만큼 <strong>dilate(팽창)</strong>로 다시 부풀려서 라인의 두께를 복원합니다. <strong>"지우개로 살짝 지웠다 다시 칠하기"</strong>와 같은 원리예요. 작은 것은 한 번에 사라지지만 큰 것은 다시 살아납니다.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🚦',
+        title: '실습 2 — 05_auto_drive_red_light.py (최종 통합!)',
+        content: `
+          <p>이제 모든 것을 합칩니다. <strong>아두이노 + Python + OpenCV + 블루투스 시리얼 통신</strong>이 한 화면에 모입니다.</p>
+
+          <h4>📡 블루투스 무선 통신 — Python ↔ 아두이노 (자율주행의 핵심!)</h4>
+          <p>자율주행 로봇은 자유롭게 돌아다녀야 하니 <strong>무선 통신이 필수</strong>죠. 우리 로봇은 아두이노에 <strong>블루투스 모듈(HC-06 등)</strong>을 달아서 노트북과 무선으로 연결됩니다. Python이 보는 카메라 영상의 결과를 <strong>블루투스로 'S' 또는 'F'라는 글자 한 자만 보냅니다.</strong> 아두이노는 그 글자를 받아서 모터를 제어해요.</p>
+
+          <div class="tip-box">
+            <span class="tip-emoji">💡</span>
+            <div class="tip-content">
+              <p class="tip-title">"블루투스인데 왜 코드는 시리얼?" — 헷갈리기 쉬운 포인트</p>
+              <p class="tip-body">물리적으로는 <strong>블루투스 무선</strong>이지만, PC 입장에서는 블루투스 연결이 <strong>가상 시리얼 포트(예: COM36)</strong>로 잡힙니다. 그래서 Python 코드에서는 일반 시리얼 통신처럼 <code>serial.Serial('COM36', 9600)</code>으로 다뤄요. 이걸 <strong>"블루투스 SPP(Serial Port Profile)"</strong>라고 부릅니다 — 무선 위에 시리얼이 얹혀 있는 구조!</p>
+            </div>
+          </div>
+
+          <div class="image-grid-responsive">
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">📷</div>
+              <div class="image-grid-card-title">1. 카메라</div>
+              <div class="image-grid-card-desc">USB로 노트북에 연결<br>NeuroCam2</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">💻</div>
+              <div class="image-grid-card-title">2. Python (노트북)</div>
+              <div class="image-grid-card-desc">OpenCV로 영상 분석<br>"빨간색 감지됨!"</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">📡</div>
+              <div class="image-grid-card-title">3. 블루투스 송신</div>
+              <div class="image-grid-card-desc">'S' 한 글자 전송<br>(무선!)</div>
+            </div>
+            <div class="image-grid-card">
+              <div style="font-size: 56px;">🤖</div>
+              <div class="image-grid-card-title">4. 아두이노 (로봇)</div>
+              <div class="image-grid-card-desc">블루투스 모듈로 'S' 받음<br>→ 모터 정지</div>
+            </div>
+          </div>
+
+          <h4>📄 05_auto_drive_red_light.py — 핵심 부분만</h4>
+
+          <div class="code-block-header">
+            <span>📄 시리얼 통신 + 빨간색 감지</span>
+          </div>
+          <div class="code-block"><pre>import cv2
+  import numpy as np
+  import serial   # 아두이노 시리얼 통신용
+  import time
+
+  # ① 아두이노 연결 (포트는 환경마다 다름! 강사에게 확인)
+  arduino = serial.Serial('COM36', 9600)
+  time.sleep(2)   # 연결 안정화 대기
+
+  # ② 설정값
+  MIN_AREA       = 3000   # 빨간색 감지 최소 면적 (픽셀)
+  CONFIRM_FRAMES = 5      # 5프레임 연속 감지되면 확정
+  WARMUP_SEC     = 3      # 시작 후 3초간은 명령 안 보냄 (안정화)
+
+  red_count  = 0
+  none_count = 0
+  last_cmd   = ""
+  start_time = time.time()
+
+  # ③ 명령 전송 함수
+  def send_command(cmd):
+      global last_cmd
+      now = time.time()
+      if now - start_time < WARMUP_SEC:   # 워밍업 중엔 안 보냄
+          return
+      if cmd == last_cmd:                  # 같은 명령 중복 방지
+          return
+      arduino.write(cmd.encode())
+      print(f"[CMD] {cmd}")
+      last_cmd = cmd
+
+  # ④ 메인 루프
+  cap = cv2.VideoCapture(0)
+  while True:
+      ret, frame = cap.read()
+      if not ret: break
+
+      hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+      
+      # 빨간색 마스크 (두 구간!)
+      mask1 = cv2.inRange(hsv, np.array([0,   120, 100]),
+                                np.array([10,  255, 255]))
+      mask2 = cv2.inRange(hsv, np.array([160, 120, 100]),
+                                np.array([179, 255, 255]))
+      mask  = mask1 + mask2
+      mask  = cv2.erode(mask,  None, iterations=2)
+      mask  = cv2.dilate(mask, None, iterations=2)
+
+      # 가장 큰 빨간 덩어리 찾기
+      contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL,
+                                           cv2.CHAIN_APPROX_SIMPLE)
+      red_detected = False
+      if len(contours) > 0:
+          largest = max(contours, key=cv2.contourArea)
+          if cv2.contourArea(largest) > MIN_AREA:
+              red_detected = True
+
+      # 연속 감지 카운터
+      if red_detected:
+          red_count += 1
+          none_count = 0
+      else:
+          none_count += 1
+          red_count = 0
+
+      # 명령 송신
+      if red_count  >= CONFIRM_FRAMES: send_command('S')   # STOP
+      elif none_count >= CONFIRM_FRAMES: send_command('F') # FORWARD
+
+      cv2.imshow("Camera", frame)
+      cv2.imshow("Red Mask", mask)
+      if cv2.waitKey(1) & 0xFF == 27: break  # ESC 종료
+
+  cap.release()
+  cv2.destroyAllWindows()
+  arduino.close()</pre></div>
+
+          <h4>🎯 코드의 4가지 안정화 기법</h4>
+          <ol>
+            <li><strong>워밍업 3초</strong> — 시작하자마자 명령 안 보냄. 카메라가 안정될 시간</li>
+            <li><strong>최소 면적 3000px</strong> — 화면의 작은 빨간 점은 무시</li>
+            <li><strong>연속 5프레임 확인</strong> — 한 번 잠깐 보였다고 멈추지 않음</li>
+            <li><strong>중복 명령 방지</strong> — 같은 명령은 한 번만 보냄</li>
+          </ol>
+
+          <div class="warning-box">
+            <p><strong>⚠️ COM 포트 번호 확인 필수!</strong> Windows의 장치관리자에서 <strong>"포트(COM 및 LPT)"</strong> 항목을 보면 우리 로봇의 블루투스 모듈이 <strong>"Standard Serial over Bluetooth link (COM##)"</strong> 같은 이름으로 잡혀 있습니다. 그 COM 번호(보통 두 자리, 예: COM36)를 확인해 코드의 <code>'COM36'</code>을 본인 번호로 바꾸세요. 처음에는 <strong>블루투스 페어링</strong>부터 해야 해요 — 강사가 단계별로 도와드립니다!</p>
+          </div>
+
+          <h4>🤖 아두이노 쪽 추가 코드 (강사가 미리 업로드)</h4>
+          <p>Python이 'S'와 'F'를 보내면 아두이노는 이걸 받아서 모터를 제어해야 해요. 강사가 미리 업로드해둔 코드는 다음과 같습니다:</p>
+
+          <div class="code-block-header">
+            <span>📄 아두이노 시리얼 수신 코드 (참고)</span>
+          </div>
+          <div class="code-block"><pre>void setup() {
+    Serial.begin(9600);   // Python과 같은 속도(보드레이트)
+    // ... 모터 핀 설정
+  }
+
+  void loop() {
+    if (Serial.available() > 0) {
+      char cmd = Serial.read();
+      if (cmd == 'S') {
+        Stop();         // 모터 정지
+      } else if (cmd == 'F') {
+        GoForward();    // 모터 전진
+      }
+    }
+  }</pre></div>
+        `
+      },
+      {
+        emoji: '🏆',
+        title: '🚦 빨간 신호등 정확도 챔피언십 (대미!)',
+        content: `
+          <p>드디어 동아리 마지막 게임입니다! Python + OpenCV + 아두이노가 합쳐진 진짜 자율주행 로봇으로 정확도 게임을 합니다.</p>
+
+          <h4>🏟️ 게임 구성</h4>
+          <ul>
+            <li><strong>경기장</strong>: 라인트레이싱 챔피언십 코스 위에 <strong>"빨간 신호등 구간"</strong> 5개 표시 (빨간 카드를 코스 옆에 세움)</li>
+            <li><strong>로봇 동작</strong>: 라인트레이싱 + 빨간 신호 멈춤 + 자동 재출발</li>
+            <li><strong>측정 항목</strong>: <strong>"몇 번 정확하게 멈췄나"</strong> + <strong>"몇 번 멈춰야 하는데 통과했나"</strong></li>
+          </ul>
+
+          <h4>📊 정확도 점수 산정</h4>
+          <table style="width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 18px;">
+            <thead>
+              <tr style="background: var(--maumgil-purple-700); color: white;">
+                <th style="padding: 12px; text-align: left;">항목</th>
+                <th style="padding: 12px; text-align: left;">점수</th>
+                <th style="padding: 12px; text-align: left;">설명</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700; color: green;">정확한 정지 (True Positive)</td>
+                <td style="padding: 10px;">+20점</td>
+                <td style="padding: 10px;">빨간 카드 앞에서 정확히 멈춤 (재출발 OK)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700; color: red;">놓침 (False Negative)</td>
+                <td style="padding: 10px;">-10점</td>
+                <td style="padding: 10px;">멈춰야 하는데 그냥 통과</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--maumgil-border);">
+                <td style="padding: 10px; font-weight: 700; color: orange;">오작동 (False Positive)</td>
+                <td style="padding: 10px;">-5점</td>
+                <td style="padding: 10px;">빨간 카드 없는데 멈춤</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; font-weight: 700;">완주 보너스</td>
+                <td style="padding: 10px;">+30점</td>
+                <td style="padding: 10px;">코스 끝까지 자력 주행 성공</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <p style="font-size: 22px; text-align: center; margin: 20px 0; padding: 16px; background: var(--maumgil-purple-50); border-radius: 12px;">
+            <strong>최대 점수 = (5번 정확한 정지 × 20) + 완주 보너스 30 = 130점</strong>
+          </p>
+
+          <h4>🔧 게임 전 코드 튜닝 팁</h4>
+          <ul>
+            <li><strong>너무 자주 오작동</strong>한다 → MIN_AREA를 3000 → 5000으로 올려 더 큰 빨간색만 인식</li>
+            <li><strong>안 멈춘다</strong> → MIN_AREA를 3000 → 1500으로 낮춰 작은 신호도 인식</li>
+            <li><strong>한 번 보고 멈췄다 풀렸다</strong> → CONFIRM_FRAMES를 5 → 8로 올려 안정성 ↑</li>
+            <li><strong>너무 늦게 반응</strong> → CONFIRM_FRAMES를 5 → 3으로 낮춰 반응속도 ↑</li>
+          </ul>
+
+          <div class="tip-box">
+            <span class="tip-emoji">🎯</span>
+            <div class="tip-content">
+              <p class="tip-title">트레이드오프 — AI의 영원한 숙제</p>
+              <p class="tip-body"><strong>"민감하게 vs 둔감하게"</strong>는 AI 시스템 설계의 영원한 고민입니다. 자율주행차도 같은 고민을 해요. 너무 민감하면 그림자만 봐도 멈추고, 너무 둔감하면 진짜 위험을 놓칩니다. 여러분이 오늘 이 미세 조정을 해보면서 "AI 엔지니어의 일상"을 미리 체험하는 거예요.</p>
+            </div>
+          </div>
+        `
+      },
+      {
+        emoji: '🎉',
+        title: 'Phase 2 마무리 — "여러분은 이제 자율주행 로봇 개발자!"',
+        content: `
+          <p>축하합니다! 12차시 동안 우리는 <strong>아무것도 모르던 빈손에서 출발해 진짜 자율주행 로봇을 완성</strong>했습니다.</p>
+
+          <h4>🏆 학기 전체 시상 부문 (학기말 누적)</h4>
+          <div class="image-grid-responsive">
+            <div class="image-grid-card" style="background: linear-gradient(135deg, #FEF3C7, #FACC15);">
+              <div style="font-size: 56px;">🥇</div>
+              <div class="image-grid-card-title">최고 누적 점수상</div>
+              <div class="image-grid-card-desc">12차시 퀴즈 합산<br>(1~6차시 종합복습 4배 가중)</div>
+            </div>
+            <div class="image-grid-card" style="background: linear-gradient(135deg, #DBEAFE, #93C5FD);">
+              <div style="font-size: 56px;">🛤️</div>
+              <div class="image-grid-card-title">라인트레이싱 챔피언</div>
+              <div class="image-grid-card-desc">9차시 챔피언십<br>최단 시간 1위</div>
+            </div>
+            <div class="image-grid-card" style="background: linear-gradient(135deg, #FCE7F3, #F9A8D4);">
+              <div style="font-size: 56px;">🚦</div>
+              <div class="image-grid-card-title">신호등 정확도 챔피언</div>
+              <div class="image-grid-card-desc">12차시 정확도 게임<br>최고 점수 1위</div>
+            </div>
+            <div class="image-grid-card" style="background: linear-gradient(135deg, #D1FAE5, #6EE7B7);">
+              <div style="font-size: 56px;">💡</div>
+              <div class="image-grid-card-title">베스트 질문상</div>
+              <div class="image-grid-card-desc">강사 추천<br>"질문하는 힘" 우수자</div>
+            </div>
+          </div>
+
+          <h4>🚀 다음 단계 — 자기주도 학습 가이드</h4>
+          <p>Phase 2를 마쳤다면 여러분은 다음 단계로 넘어갈 충분한 기초를 가졌습니다:</p>
+          <ul>
+            <li><strong>Teachable Machine</strong> (teachablemachine.withgoogle.com) — 머신러닝 모델을 직접 학습시키기</li>
+            <li><strong>YOLO 객체 탐지</strong> — 사람·차·표지판 등 80가지 사물 자동 인식</li>
+            <li><strong>라즈베리파이 + 카메라</strong> — 노트북 없이 로봇 자체에서 AI 처리</li>
+            <li><strong>ROS (Robot Operating System)</strong> — 진짜 자율주행차가 쓰는 프레임워크</li>
+          </ul>
+
+          <div class="knowledge-card">
+            <span class="knowledge-eyebrow">💌 마지막 메시지</span>
+            <h4>"질문하는 힘"이 미래를 만든다</h4>
+            <div class="knowledge-section">
+              <p>AI 시대가 왔다고 사람들이 말합니다. 어떤 사람은 두려워하고, 어떤 사람은 기회로 봅니다. 차이는 단 한 가지예요 — <strong>"AI를 사용만 하는 사람"</strong>이 될지 <strong>"AI를 만드는 사람"</strong>이 될지의 차이.</p>
+              <p>여러분은 12차시 동안 직접 코드를 쓰고, 직접 로봇을 움직이고, 직접 카메라에게 색을 가르쳤습니다. 이미 <strong>"만드는 사람"</strong>의 첫 걸음을 뗐어요.</p>
+              <p>여기서 멈추지 마세요. <strong>"왜?"</strong>와 <strong>"어떻게 하면 더 좋을까?"</strong>라는 질문을 매일 하나씩만 던지면, 여러분은 5년 뒤 누구보다 멋진 개발자가 되어 있을 거예요.</p>
+              <p style="text-align: right; margin-top: 16px; font-style: italic; color: var(--maumgil-purple-700);">— 윤가형 · ㈜마음길 대표 · 사유·상상·공감으로 만드는 미래교육</p>
+            </div>
+          </div>
+        `
+      }
+    ],
+    quiz: [
+      {
+        type: 'multiple',
+        question: '오늘 수업의 빨간 신호등 정확도 게임에서 로봇이 해야 할 일은?',
+        options: [
+          '빨간 신호등을 보면 더 빠르게 달린다',
+          '빨간 신호등을 무시하고 직진한다',
+          '빨간 신호등을 보면 멈추고, 신호등이 사라지면 다시 출발한다',
+          '빨간 신호등을 피해 옆으로 돌아간다'
+        ],
+        answer: 2,
+        explanation: '실제 자동차도 빨간불에서 멈추고, 초록불(또는 신호 해제)이 되면 다시 출발하죠? 우리 로봇도 똑같이 동작해야 합니다.'
+      },
+      {
+        type: 'multiple',
+        question: '카메라가 빨간색을 감지하기 위해 사용하는 색상 공간은?',
+        options: [
+          'BGR (파랑·초록·빨강)',
+          'RGB (빨강·초록·파랑)',
+          '흑백',
+          'HSV (색조·채도·명도)'
+        ],
+        answer: 3,
+        explanation: '11차시(OpenCV)에서 배운 그대로! 조명이 변해도 색상이 안정적인 HSV가 색깔 감지의 표준입니다.'
+      },
+      {
+        type: 'multiple',
+        question: '자율주행 로봇이 자유롭게 돌아다니면서, 카메라가 본 결과를 PC에서 아두이노로 전달하려면 어떤 통신이 가장 적합한가?',
+        options: [
+          '유선 USB 케이블 (로봇이 케이블에 묶임)',
+          '블루투스 무선 통신 (HC-06 등 모듈 사용)',
+          '와이파이 (학교에서 IP 설정 복잡)',
+          '말로 외쳐서 전달'
+        ],
+        answer: 1,
+        explanation: '자율주행 로봇은 자유롭게 돌아다녀야 하니 무선이 필수예요! 우리 키트는 아두이노에 <strong>블루투스 모듈(HC-06 등)</strong>을 달아서 PC와 무선 연결합니다. 다만 PC 쪽에서는 블루투스가 가상 시리얼 포트(예: COM36)로 잡히기 때문에 Python 코드에서는 <code>serial.Serial(\'COM36\', 9600)</code>처럼 시리얼 통신처럼 다룹니다. <strong>물리적으로는 블루투스, 소프트웨어 인터페이스는 시리얼!</strong>'
+      },
+      {
+        type: 'multiple',
+        question: '카메라가 한 번 깜빡 빨간색이 보였다고 바로 정지하면 어떻게 될까?',
+        options: [
+          '빨간색이 빛 반사·노이즈로 잘못 보인 경우에도 멈춰서 자꾸 오작동한다',
+          '아주 안전한 자율주행이 된다',
+          '아무 변화 없다',
+          '로봇이 더 빨라진다'
+        ],
+        answer: 0,
+        explanation: '카메라에는 항상 약간의 노이즈가 있어요. 그래서 "여러 프레임 연속 감지될 때만 진짜로 인정" 하는 안정화 기법(CONFIRM_FRAMES=5)이 필요한 거예요.'
+      },
+      {
+        type: 'multiple',
+        question: '오늘 우리가 만든 자율주행 로봇은 자동차의 자율주행 6단계(SAE Level 0~5) 중 어느 수준에 가까운가?',
+        options: [
+          'Level 5 (완전 자율주행, 운전자 불필요)',
+          'Level 0 (운전자 100% 조작)',
+          'Level 1~2 사이 (특정 기능만 자동 — 우리 로봇은 빨간불 정지만 자동)',
+          'Level 4 (특정 구역 무인 주행)'
+        ],
+        answer: 2,
+        explanation: '우리 로봇은 "빨간 신호등에서 멈추기"라는 특정 기능 하나만 자동입니다. 이는 Level 1~2 (운전자 보조) 수준에 해당해요. 작아 보여도 같은 원리 위에 서 있다는 점, 잊지 마세요!'
+      }
+    ]
+  }
+
+  ]; /* === END OF LESSON_DATA === */
+
+
+</script>
+
+</body>
+</html>
